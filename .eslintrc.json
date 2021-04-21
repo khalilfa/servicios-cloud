@@ -2,7 +2,15 @@
     "env": {
         "node": true
     },
-    "extends": ["eslint:recommended"],
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
     "parserOptions": {
 		"ecmaVersion": 7,
         "sourceType": "module"
@@ -12,7 +20,6 @@
        "no-new-wrappers": "warn",
        "semi": ["warn", "always"],
        "quote-props": ["warn", "consistent-as-needed"],
-       "no-unused-vars": "warn",
 
        "prefer-rest-params": "warn",
        "prefer-const": "warn",
@@ -34,6 +41,8 @@
 
        "require-jsdoc": "off",
        "react/prop-types": "off",
-       "no-console": "off"
+       "no-console": "off",
+
+       "@typescript-eslint/no-var-requires": "off"
     }
 }
