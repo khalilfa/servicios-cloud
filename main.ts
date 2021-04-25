@@ -1,9 +1,9 @@
 const fs = require('fs'); // necesitado para guardar/cargar unqfy
-const unqmod = require('./unqfy'); // importamos el modulo unqfy
+const unqmod = require('./src/unqfy'); // importamos el modulo unqfy
 
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
 function getUNQfy(filename = 'data.json') {
-  let unqfy = new unqmod.UNQfy();
+  let unqfy = new unqmod.UNQQfy();
   if (fs.existsSync(filename)) {
     unqfy = unqmod.UNQfy.load(filename);
   }

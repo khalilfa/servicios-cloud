@@ -6,7 +6,8 @@
   "types": "dist/main.d.ts",
   "dependencies": {
     "chai": "^4.1.2",
-    "picklify": "github:lwoites/picklify"
+    "picklify": "github:lwoites/picklify",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/node": "^14.14.41",
