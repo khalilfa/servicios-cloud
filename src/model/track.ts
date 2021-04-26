@@ -1,5 +1,3 @@
-class Track {
+export default class Track {
   constructor() {}
 }
-
-module.exports = Track;

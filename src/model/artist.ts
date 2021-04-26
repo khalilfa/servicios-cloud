@@ -1,6 +1,8 @@
-const utils = require('../utils/utils');
+import Album from './album';
+import Track from './track';
+import { generateId } from '../utils/utils';
 
-class Artist {
+export default class Artist {
   private id: string;
   private name: string;
   private country: string;
@@ -8,7 +10,7 @@ class Artist {
   private tracks: Track[]; 
 
   constructor(name: string, country: string) {
-    this.id = utils.generateId();
+    this.id = generateId();
     this.name = name;
     this.country = country;
     this.albums = [];
@@ -18,5 +20,3 @@ class Artist {
   get getId() { return this.id; }
 
 }
-
-module.exports = Artist;

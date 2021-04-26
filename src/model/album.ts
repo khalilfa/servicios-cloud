@@ -1,5 +1,3 @@
-class Album {
+export default class Album {
   constructor() {}
 }
-
-module.exports = Album;
