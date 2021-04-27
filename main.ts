@@ -46,7 +46,11 @@ export function saveUNQfy(unqfy: any, filename = 'data.json') {
 */
 
 function main() {
-  ConsoleManager.executeCommand(process.argv);
+  try{
+    ConsoleManager.executeCommand(process.argv);
+  } catch(e: any) {
+    console.error('Error: \n', e);
+  }
 }
 
 main();
