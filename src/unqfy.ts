@@ -1,20 +1,28 @@
+import Artist from './model/artist';
+import Track from './model/track';
+import Album from './model/album';
+import fs from 'fs';
 
 const picklify = require('picklify'); // para cargar/guarfar unqfy
-const fs = require('fs'); // para cargar/guarfar unqfy
 
+export default class UNQfy {
+  private tracks: Track[];
+  private albums: Album[];
+  private artists: Artist[];
 
-class UNQfy {
+  constructor() {
+    this.tracks = [];
+    this.albums = [];
+    this.artists = [];
+  }
 
-  // artistData: objeto JS con los datos necesarios para crear un artista
-  //   artistData.name (string)
-  //   artistData.country (string)
-  // retorna: el nuevo artista creado
-  addArtist(artistData) {
-  /* Crea un artista y lo agrega a unqfy.
-  El objeto artista creado debe soportar (al menos):
-    - una propiedad name (string)
-    - una propiedad country (string)
-  */
+  addArtist(artistData: {name: string, country: string}): Artist {
+    let { name, country } = artistData;
+    let artist: Artist = new Artist(name, country);
+
+    this.artists.push(artist);
+
+    return artist;
   }
 
 
@@ -22,12 +30,13 @@ class UNQfy {
   //   albumData.name (string)
   //   albumData.year (number)
   // retorna: el nuevo album creado
-  addAlbum(artistId, albumData) {
+  addAlbum(artistId: string, albumData: {name: string, year: number}): Album {
   /* Crea un album y lo agrega al artista con id artistId.
     El objeto album creado debe tener (al menos):
      - una propiedad name (string)
      - una propiedad year (number)
   */
+    return (new Album());
   }
 
 
@@ -36,41 +45,41 @@ class UNQfy {
   //   trackData.duration (number)
   //   trackData.genres (lista de strings)
   // retorna: el nuevo track creado
-  addTrack(albumId, trackData) {
+  addTrack(albumId: string, trackData: {name: string, duration: number, genres: string[]}): Track {
   /* Crea un track y lo agrega al album con id albumId.
   El objeto track creado debe tener (al menos):
       - una propiedad name (string),
       - una propiedad duration (number),
       - una propiedad genres (lista de strings)
   */
+    return (new Track());
   }
 
-  getArtistById(id) {
-
+  getArtistById(id: string) {
   }
 
-  getAlbumById(id) {
-
-  }
-
-  getTrackById(id) {
+  getAlbumById(id: string) {
 
   }
 
-  getPlaylistById(id) {
+  getTrackById(id: string) {
+
+  }
+
+  getPlaylistById(id: string) {
 
   }
 
   // genres: array de generos(strings)
   // retorna: los tracks que contenga alguno de los generos en el parametro genres
-  getTracksMatchingGenres(genres) {
-
+  getTracksMatchingGenres(genres: string[]): Track[] {
+    return [];
   }
 
   // artistName: nombre de artista(string)
   // retorna: los tracks interpredatos por el artista con nombre artistName
-  getTracksMatchingArtist(artistName) {
-
+  getTracksMatchingArtist(artistName: string): Track[] {
+    return [];
   }
 
 
@@ -78,7 +87,7 @@ class UNQfy {
   // genresToInclude: array de generos
   // maxDuration: duración en segundos
   // retorna: la nueva playlist creada
-  createPlaylist(name, genresToInclude, maxDuration) {
+  createPlaylist(name: string, genresToInclude: string[], maxDuration: number) {
   /*** Crea una playlist y la agrega a unqfy. ***
     El objeto playlist creado debe soportar (al menos):
       * una propiedad name (string)
@@ -88,21 +97,16 @@ class UNQfy {
 
   }
 
-  save(filename) {
+  save(filename: string) {
     const serializedData = picklify.picklify(this);
     fs.writeFileSync(filename, JSON.stringify(serializedData, null, 2));
   }
 
-  static load(filename) {
+  static load(filename: string) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
-    //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy];
+    const classes = [UNQfy, Artist, Album, Track];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }
 
-// COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
-module.exports = {
-  UNQfy: UNQfy,
-};
-
+module.exports = UNQfy;

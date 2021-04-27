@@ -6,10 +6,12 @@
   "types": "dist/main.d.ts",
   "dependencies": {
     "chai": "^4.1.2",
-    "picklify": "github:lwoites/picklify"
+    "picklify": "github:lwoites/picklify",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/node": "^14.14.41",
+    "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "eslint": "^7.24.0",
