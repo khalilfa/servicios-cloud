@@ -38,20 +38,16 @@ export default class UNQfy {
     return album;
   }
 
-
-  // trackData: objeto JS con los datos necesarios para crear un track
-  //   trackData.name (string)
-  //   trackData.duration (number)
-  //   trackData.genres (lista de strings)
-  // retorna: el nuevo track creado
   addTrack(albumId: string, trackData: {name: string, duration: number, genres: string[]}): Track {
-  /* Crea un track y lo agrega al album con id albumId.
-  El objeto track creado debe tener (al menos):
-      - una propiedad name (string),
-      - una propiedad duration (number),
-      - una propiedad genres (lista de strings)
-  */
-    return (new Track());
+    let albumIds: string[] = this.albums.map(album => album.getId());
+    if(!albumIds.includes(albumId)) throw new EntityNotFoundError('Album', albumId);
+
+    let { name, duration, genres } = trackData;
+    let track: Track = new Track(albumId, name, duration, genres);
+
+    this.tracks.push(track);
+
+    return track;
   }
 
   getArtistById(id: string): Artist {
