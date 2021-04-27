@@ -1,8 +1,9 @@
 import { getUNQfy, saveUNQfy } from '../../main';
+import Album from '../model/album';
 import Artist from '../model/artist';
 import UNQfy from '../unqfy';
 
-const commands = ['addArtist'];
+const commands = ['addArtist', 'addAlbum'];
 
 export default class ConsoleManager {
   static executeCommand(args: string[]) {
@@ -60,6 +61,10 @@ class Command {
         let artist: Artist = this.unqfy.addArtist(this.properties);
         console.log('- Se agrego un nuevo artista: ', artist);
         break;
+      case 'addAlbum':
+        let artistId: string = this.properties.artist;
+        let album: Album = this.unqfy.addAlbum(artistId, this.properties);
+        console.log('- Se agrego un nuevo album: ', album);
     
       default:
         break;

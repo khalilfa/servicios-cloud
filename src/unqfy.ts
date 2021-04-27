@@ -36,7 +36,12 @@ export default class UNQfy {
      - una propiedad name (string)
      - una propiedad year (number)
   */
-    return (new Album());
+    let { name, year } = albumData;
+    let album: Album = new Album(artistId, name, year);
+    
+    
+    
+    return album;
   }
 
 
