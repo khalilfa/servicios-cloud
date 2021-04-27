@@ -2,6 +2,7 @@ import Artist from './model/artist';
 import Track from './model/track';
 import Album from './model/album';
 import fs from 'fs';
+import EntityNotFoundError from './exceptions/entityNotFountError';
 
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 
@@ -25,21 +26,14 @@ export default class UNQfy {
     return artist;
   }
 
-
-  // albumData: objeto JS con los datos necesarios para crear un album
-  //   albumData.name (string)
-  //   albumData.year (number)
-  // retorna: el nuevo album creado
   addAlbum(artistId: string, albumData: {name: string, year: number}): Album {
-  /* Crea un album y lo agrega al artista con id artistId.
-    El objeto album creado debe tener (al menos):
-     - una propiedad name (string)
-     - una propiedad year (number)
-  */
+    let artistIds: string[] = this.artists.map(ar => ar.getId());
+    if(!artistIds.includes(artistId)) throw new EntityNotFoundError('Artist', artistId);
+
     let { name, year } = albumData;
     let album: Album = new Album(artistId, name, year);
-    
-    
+
+    this.albums.push(album);
     
     return album;
   }
@@ -60,7 +54,12 @@ export default class UNQfy {
     return (new Track());
   }
 
-  getArtistById(id: string) {
+  getArtistById(id: string): Artist {
+    let allArtistIds: string[] = this.artists.map(artist => artist.getId());
+
+    if(!allArtistIds.includes(id)) throw new EntityNotFoundError('Artist', id);
+
+    return this.artists.filter(artist => artist.getId() === id)[0];
   }
 
   getAlbumById(id: string) {

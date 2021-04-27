@@ -1,9 +1,15 @@
 import { getUNQfy, saveUNQfy } from '../../main';
+import CommandNotFoundError from '../exceptions/commandNotFoundError';
+import BadParamError from '../exceptions/badParamError';
 import Album from '../model/album';
 import Artist from '../model/artist';
 import UNQfy from '../unqfy';
 
-const commands = ['addArtist', 'addAlbum'];
+const COMMANDS: string[] = ['addArtist', 'addAlbum'];
+const VALID_PARAMS: any = {
+  addArtist: ['name', 'country'],
+  addAlbum: ['artist', 'name', 'year'],
+}
 
 export default class ConsoleManager {
   static executeCommand(args: string[]) {
@@ -29,8 +35,8 @@ export default class ConsoleManager {
 
   static formatProperties(args: string[], properties: any = {}): any {
     if(args.length === 1) {
-      console.log(`Se ingreso un parametro sin valor asociado: ${args.shift()}`);
-      ConsoleManager.formatProperties(args, properties);
+      throw new BadParamError(<string> args.shift());
+
     } else if(args.length >= 2) {
       let key: string = <string> args.shift();
       let value: string = <string> args.shift();
@@ -48,7 +54,8 @@ class Command {
   private unqfy: UNQfy;
 
   constructor(param: string, properties: any, unqfy: UNQfy) {
-    if(!commands.includes(param)) console.error('No existe el comando');
+    if(!COMMANDS.includes(param)) throw new CommandNotFoundError(param);
+    if(!this.validParams(param, properties)) throw new BadParamError(VALID_PARAMS[param]);
     
     this.command = param;
     this.properties = properties;
@@ -69,5 +76,10 @@ class Command {
       default:
         break;
     };
+  }
+
+  validParams(operation: string, properties: object): boolean {
+    let valid: boolean = Object.keys(properties).reduce((accum, current) => VALID_PARAMS[operation].includes(current) && accum, true);
+    return valid;
   }
 }
