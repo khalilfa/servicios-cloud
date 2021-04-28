@@ -4,11 +4,13 @@ import BadParamError from '../exceptions/badParamError';
 import Album from '../model/album';
 import Artist from '../model/artist';
 import UNQfy from '../unqfy';
+import Track from '../model/track';
 
-const COMMANDS: string[] = ['addArtist', 'addAlbum'];
+const COMMANDS: string[] = ['addArtist', 'addAlbum', 'addTrack'];
 const VALID_PARAMS: any = {
   addArtist: ['name', 'country'],
   addAlbum: ['artist', 'name', 'year'],
+  addTrack: ['name', 'duration', 'genres', 'album'],
 }
 
 export default class ConsoleManager {
@@ -70,16 +72,35 @@ class Command {
         break;
       case 'addAlbum':
         let artistId: string = this.properties.artist;
-        let album: Album = this.unqfy.addAlbum(artistId, this.properties);
+
+        let year: number = parseInt(this.properties.year);
+        let albumData: {name: string, year: number} = { ...this.properties, year };
+
+        let album: Album = this.unqfy.addAlbum(artistId, albumData);
         console.log('- Se agrego un nuevo album: ', album);
-    
+        break;
+      case 'addTrack':
+        let albumId: string = this.properties.album;
+
+        let genres: string[] = this.properties.genres.split(',').map((genre: string) => genre.trim());
+        let duration: number = parseInt(this.properties.duration);
+        let trackData: { name: string; duration: number; genres: string[]; } = { ...this.properties, genres, duration };
+
+        let track: Track = this.unqfy.addTrack(albumId, trackData);
+        console.log('- Se agrego un nuevo track: ', track);
+        break;
       default:
         break;
     };
   }
 
   validParams(operation: string, properties: object): boolean {
-    let valid: boolean = Object.keys(properties).reduce((accum, current) => VALID_PARAMS[operation].includes(current) && accum, true);
-    return valid;
+    // All parameters are correct
+    let valid: boolean = Object.keys(properties).reduce((accum: boolean, current: string) => VALID_PARAMS[operation].includes(current) && accum, true);
+
+    // All parameters exist
+    let necessary: boolean = VALID_PARAMS[operation].reduce((accum: boolean, current: string) => Object.keys(properties).includes(current) && accum, true);
+
+    return valid && necessary;
   }
 }
