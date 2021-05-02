@@ -66,29 +66,37 @@ class Command {
 
   execute(): void {
     switch (this.command) {
-      case 'addArtist':
+      case 'addArtist': {
         let artist: Artist = this.unqfy.addArtist(this.properties);
         console.log('- Se agrego un nuevo artista: ', artist);
         break;
-      case 'addAlbum':
+      }
+      case 'addAlbum': {
         let artistId: string = this.properties.artist;
 
         let year: number = parseInt(this.properties.year);
-        let albumData: {name: string, year: number} = { ...this.properties, year };
+        let albumData: { name: string, year: number } = {...this.properties, year};
 
         let album: Album = this.unqfy.addAlbum(artistId, albumData);
         console.log('- Se agrego un nuevo album: ', album);
         break;
-      case 'addTrack':
+      }
+      case 'addTrack': {
         let albumId: string = this.properties.album;
 
         let genres: string[] = this.properties.genres.split(',').map((genre: string) => genre.trim());
         let duration: number = parseInt(this.properties.duration);
-        let trackData: { name: string; duration: number; genres: string[]; } = { ...this.properties, genres, duration };
+        let trackData: { name: string; duration: number; genres: string[]; } = {...this.properties, genres, duration};
 
         let track: Track = this.unqfy.addTrack(albumId, trackData);
         console.log('- Se agrego un nuevo track: ', track);
         break;
+      }
+      case 'getTracksByArtist': {
+        let traks: Track[] = this.unqfy.getTracksMatchingArtist(this.properties.artist)
+
+        break
+      }
       default:
         break;
     };

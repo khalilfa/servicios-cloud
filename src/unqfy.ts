@@ -27,9 +27,7 @@ export default class UNQfy {
   }
 
   addAlbum(artistId: string, albumData: {name: string, year: number}): Album {
-    let artistIds: string[] = this.artists.map(ar => ar.getId());
-    if(!artistIds.includes(artistId)) throw new EntityNotFoundError('Artist', artistId);
-
+    this.getArtistById(artistId)
     let { name, year } = albumData;
     let album: Album = new Album(artistId, name, year);
 
@@ -39,8 +37,7 @@ export default class UNQfy {
   }
 
   addTrack(albumId: string, trackData: {name: string, duration: number, genres: string[]}): Track {
-    let albumIds: string[] = this.albums.map(album => album.getId());
-    if(!albumIds.includes(albumId)) throw new EntityNotFoundError('Album', albumId);
+    this.getAlbumById(albumId)
 
     let { name, duration, genres } = trackData;
     let track: Track = new Track(albumId, name, duration, genres);
@@ -51,19 +48,30 @@ export default class UNQfy {
   }
 
   getArtistById(id: string): Artist {
-    let allArtistIds: string[] = this.artists.map(artist => artist.getId());
+    let artist = this.artists.find(value => value.getId() === id)
 
-    if(!allArtistIds.includes(id)) throw new EntityNotFoundError('Artist', id);
-
-    return this.artists.filter(artist => artist.getId() === id)[0];
+    if(!artist){
+      throw new EntityNotFoundError("Album", id)
+    }
+    return artist
   }
 
   getAlbumById(id: string) {
+    let album = this.albums.find(value => value.getId() === id)
 
+    if(!album){
+      throw new EntityNotFoundError("Album", id)
+    }
+    return album
   }
 
   getTrackById(id: string) {
+    let track = this.tracks.find(value => value.getId() === id)
 
+    if(!track){
+      throw new EntityNotFoundError("Track", id)
+    }
+    return track
   }
 
   getPlaylistById(id: string) {
@@ -73,12 +81,13 @@ export default class UNQfy {
   // genres: array de generos(strings)
   // retorna: los tracks que contenga alguno de los generos en el parametro genres
   getTracksMatchingGenres(genres: string[]): Track[] {
-    return [];
+    return this.tracks.filter(track => track.genres.some(genre => genres.includes(genre)))
   }
 
   // artistName: nombre de artista(string)
   // retorna: los tracks interpredatos por el artista con nombre artistName
-  getTracksMatchingArtist(artistName: string): Track[] {
+  getTracksMatchingArtist(artistData: {name: string}): Track[] {
+    let tracks: Track[] = this.tracks.filter(track => track);
     return [];
   }
 
