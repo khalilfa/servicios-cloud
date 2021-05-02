@@ -6,11 +6,13 @@ import Artist from '../model/artist';
 import UNQfy from '../unqfy';
 import Track from '../model/track';
 
-const COMMANDS: string[] = ['addArtist', 'addAlbum', 'addTrack'];
+const COMMANDS: string[] = ['addArtist', 'addAlbum', 'addTrack', 'tracksByGenres', 'tracksByArtist'];
 const VALID_PARAMS: any = {
   addArtist: ['name', 'country'],
   addAlbum: ['artist', 'name', 'year'],
   addTrack: ['name', 'duration', 'genres', 'album'],
+  tracksByGenres: ['genres'],
+  tracksByArtist: ['artistName'],
 }
 
 export default class ConsoleManager {
@@ -92,10 +94,19 @@ class Command {
         console.log('- Se agrego un nuevo track: ', track);
         break;
       }
-      case 'getTracksByArtist': {
-        let traks: Track[] = this.unqfy.getTracksMatchingArtist(this.properties.artist)
+      case 'tracksByGenres': {
+        let genres: string[] = this.properties.genres;
+        let tracks: Track[] = this.unqfy.getTracksMatchingGenres(genres);
 
-        break
+        console.log('- Tracks by genres: ', tracks);
+        break;
+      }
+      case 'tracksByArtist': {
+        let artistData: { name: string } = this.properties.artistName;
+        let tracks: Track[] = this.unqfy.getTracksMatchingArtist(artistData)
+
+        console.log('- Tracks by artist: ', tracks);
+        break;
       }
       default:
         break;

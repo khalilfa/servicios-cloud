@@ -1,19 +1,26 @@
 import { generateId } from '../utils/utils';
 
 export default class Artist {
-  private id: string;
-  private name: string;
-  private country: string;
+  private _id: string;
+  private _name: string;
+  private _country: string;
 
 
   constructor(name: string, country: string) {
-    this.id = generateId();
-    this.name = name;
-    this.country = country;
+    this._id = generateId();
+    this._name = name;
+    this._country = country;
   }
 
-  public getId() { return this.id; }
+  get id(): string {
+    return this._id;
+  }
 
-  public getName() { return this.name; }
+  get name(): string {
+    return this._name;
+  }
 
+  get country(): string {
+    return this._country;
+  }
 }

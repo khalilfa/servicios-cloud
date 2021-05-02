@@ -48,29 +48,26 @@ export default class UNQfy {
   }
 
   getArtistById(id: string): Artist {
-    let artist = this.artists.find(value => value.getId() === id)
+    let artist = this.artists.find(value => value.id === id)
 
-    if(!artist){
-      throw new EntityNotFoundError("Album", id)
-    }
+    if(!artist) throw new EntityNotFoundError("Album", id);
+
     return artist
   }
 
   getAlbumById(id: string) {
-    let album = this.albums.find(value => value.getId() === id)
+    let album = this.albums.find(value => value.id === id)
 
-    if(!album){
-      throw new EntityNotFoundError("Album", id)
-    }
+    if(!album) throw new EntityNotFoundError("Album", id);
+
     return album
   }
 
   getTrackById(id: string) {
-    let track = this.tracks.find(value => value.getId() === id)
+    let track = this.tracks.find(value => value.id === id)
 
-    if(!track){
-      throw new EntityNotFoundError("Track", id)
-    }
+    if(!track) throw new EntityNotFoundError("Track", id);
+
     return track
   }
 
@@ -78,17 +75,30 @@ export default class UNQfy {
 
   }
 
-  // genres: array de generos(strings)
-  // retorna: los tracks que contenga alguno de los generos en el parametro genres
   getTracksMatchingGenres(genres: string[]): Track[] {
     return this.tracks.filter(track => track.genres.some(genre => genres.includes(genre)))
   }
 
-  // artistName: nombre de artista(string)
-  // retorna: los tracks interpredatos por el artista con nombre artistName
   getTracksMatchingArtist(artistData: {name: string}): Track[] {
-    let tracks: Track[] = this.tracks.filter(track => track);
-    return [];
+    let artistName: string = artistData.name;
+    let artistId: string = this.getArtistByName(artistName).id;
+    let albumIds: string[] = this.getAlbumsByArtist(artistId).map(album => album.id);
+    
+    let tracks: Track[] = this.tracks.filter(track => albumIds.includes(track.album));
+
+    return tracks;
+  }
+
+  private getArtistByName(artistName: string): Artist {
+    let artist: Artist | undefined = this.artists.find(artist => artist.name.toLowerCase() === artistName.toLowerCase());
+
+    if(!artist) throw new EntityNotFoundError("Artist", artistName);
+
+    return artist;
+  }
+
+  private getAlbumsByArtist(artistId: string): Album[] {
+    return this.albums.filter(album => album.artist === artistId);
   }
 
 
