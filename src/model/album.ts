@@ -17,6 +17,10 @@ export default class Album {
     return this._id;
   }
 
+  set id(value: string) {
+    this._id = value;
+  }
+
   get name(): string {
     return this._name;
   }

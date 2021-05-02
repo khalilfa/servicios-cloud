@@ -22,9 +22,9 @@ export default class ConsoleManager {
     let instructionIndex = existFile ? 3 : 2;
     let instruction: string = args[instructionIndex];
     let properties: any = ConsoleManager.formatProperties(args.slice(instructionIndex + 1));
-    let command: Command = new Command(instruction, properties, unqfy);
+    let command: Record<string, any> = new Command(instruction, properties, unqfy);
     
-    command.execute();
+    command[command.getCommand()]();
 
     if(existFile) {
       saveUNQfy(unqfy, args[2]);
@@ -66,54 +66,51 @@ class Command {
     this.unqfy = unqfy;
   }
 
-  execute(): void {
-    switch (this.command) {
-      case 'addArtist': {
-        let artist: Artist = this.unqfy.addArtist(this.properties);
-        console.log('- Se agrego un nuevo artista: ', artist);
-        break;
-      }
-      case 'addAlbum': {
-        let artistId: string = this.properties.artist;
-
-        let year: number = parseInt(this.properties.year);
-        let albumData: { name: string, year: number } = {...this.properties, year};
-
-        let album: Album = this.unqfy.addAlbum(artistId, albumData);
-        console.log('- Se agrego un nuevo album: ', album);
-        break;
-      }
-      case 'addTrack': {
-        let albumId: string = this.properties.album;
-
-        let genres: string[] = this.properties.genres.split(',').map((genre: string) => genre.trim());
-        let duration: number = parseInt(this.properties.duration);
-        let trackData: { name: string; duration: number; genres: string[]; } = {...this.properties, genres, duration};
-
-        let track: Track = this.unqfy.addTrack(albumId, trackData);
-        console.log('- Se agrego un nuevo track: ', track);
-        break;
-      }
-      case 'tracksByGenres': {
-        let genres: string[] = this.properties.genres;
-        let tracks: Track[] = this.unqfy.getTracksMatchingGenres(genres);
-
-        console.log('- Tracks by genres: ', tracks);
-        break;
-      }
-      case 'tracksByArtist': {
-        let artistData: { name: string } = this.properties.artistName;
-        let tracks: Track[] = this.unqfy.getTracksMatchingArtist(artistData)
-
-        console.log('- Tracks by artist: ', tracks);
-        break;
-      }
-      default:
-        break;
-    };
+  public getCommand(): string {
+    return this.command;
   }
 
-  validParams(operation: string, properties: object): boolean {
+  private addArtist(): void {
+    let artist: Artist = this.unqfy.addArtist(this.properties);
+    console.log('- Se agrego un nuevo artista: ', artist);
+  }
+
+  private addAlbum(): void {
+    let artistId: string = this.properties.artist;
+
+    let year: number = parseInt(this.properties.year);
+    let albumData: { name: string, year: number } = {...this.properties, year};
+
+    let album: Album = this.unqfy.addAlbum(artistId, albumData);
+    console.log('- Se agrego un nuevo album: ', album);
+  }
+
+  private tracksByGenres(): void {
+    let genres: string[] = this.properties.genres.split(',').map((genre: string) => genre.trim());
+    let tracks: Track[] = this.unqfy.getTracksMatchingGenres(genres);
+
+    console.log('- Tracks by genres: ', tracks);
+  }
+
+  private tracksByArtist(): void {
+    let artistData: { name: string } = this.properties.artistName;
+    let tracks: Track[] = this.unqfy.getTracksMatchingArtist(artistData)
+
+    console.log('- Tracks by artist: ', tracks);
+  }
+
+  private addTrack() {
+    let albumId: string = this.properties.album;
+
+    let genres: string[] = this.properties.genres.split(',').map((genre: string) => genre.trim());
+    let duration: number = parseInt(this.properties.duration);
+    let trackData: { name: string; duration: number; genres: string[]; } = {...this.properties, genres, duration};
+
+    let track: Track = this.unqfy.addTrack(albumId, trackData);
+    console.log('- Se agrego un nuevo track: ', track);
+  }
+
+  private validParams(operation: string, properties: object): boolean {
     // All parameters are correct
     let valid: boolean = Object.keys(properties).reduce((accum: boolean, current: string) => VALID_PARAMS[operation].includes(current) && accum, true);
 
