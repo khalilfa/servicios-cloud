@@ -6,13 +6,16 @@ import Artist from '../model/artist';
 import UNQfy from '../unqfy';
 import Track from '../model/track';
 
-const COMMANDS: string[] = ['addArtist', 'addAlbum', 'addTrack', 'tracksByGenres', 'tracksByArtist'];
+const COMMANDS: string[] = ['addArtist', 'addAlbum', 'addTrack', 'tracksByGenres', 'tracksByArtist', 'deleteArtist', 'deleteAlbum', 'deleteTrack'];
 const VALID_PARAMS: any = {
   addArtist: ['name', 'country'],
   addAlbum: ['artist', 'name', 'year'],
   addTrack: ['name', 'duration', 'genres', 'album'],
   tracksByGenres: ['genres'],
   tracksByArtist: ['artistName'],
+  deleteArtist: ['artist'],
+  deleteAlbum: ['album'],
+  deleteTrack: ['track'],
 }
 
 export default class ConsoleManager {
@@ -66,16 +69,24 @@ class Command {
     this.unqfy = unqfy;
   }
 
-  public getCommand(): string {
+  getCommand(): string {
     return this.command;
   }
 
-  private addArtist(): void {
+  addArtist(): void {
     let artist: Artist = this.unqfy.addArtist(this.properties);
     console.log('- Se agrego un nuevo artista: ', artist);
   }
 
-  private addAlbum(): void {
+  deleteArtist(): void {
+    let artistId: string = this.properties.artist;
+
+    this.unqfy.deleteArtist(artistId);
+
+    console.log('- Se elimino el artista con id: ', artistId);
+  }
+
+  addAlbum(): void {
     let artistId: string = this.properties.artist;
 
     let year: number = parseInt(this.properties.year);
@@ -85,21 +96,29 @@ class Command {
     console.log('- Se agrego un nuevo album: ', album);
   }
 
-  private tracksByGenres(): void {
+  deleteAlbum(): void {
+    let albumId: string = this.properties.album;
+    
+    this.unqfy.deleteAlbum([albumId]);
+
+    console.log('- Se elimino el album con id: ', albumId);
+  }
+
+  tracksByGenres(): void {
     let genres: string[] = this.properties.genres.split(',').map((genre: string) => genre.trim());
     let tracks: Track[] = this.unqfy.getTracksMatchingGenres(genres);
 
     console.log('- Tracks by genres: ', tracks);
   }
 
-  private tracksByArtist(): void {
+  tracksByArtist(): void {
     let artistData: { name: string } = this.properties.artistName;
     let tracks: Track[] = this.unqfy.getTracksMatchingArtist(artistData)
 
     console.log('- Tracks by artist: ', tracks);
   }
 
-  private addTrack() {
+  addTrack() {
     let albumId: string = this.properties.album;
 
     let genres: string[] = this.properties.genres.split(',').map((genre: string) => genre.trim());
@@ -110,7 +129,15 @@ class Command {
     console.log('- Se agrego un nuevo track: ', track);
   }
 
-  private validParams(operation: string, properties: object): boolean {
+  deleteTrack() {
+    let trackId: string = this.properties.track;
+
+    this.unqfy.deleteTrack([trackId]);
+
+    console.log('- Se elimino el track con id: ', trackId);
+  }
+
+  validParams(operation: string, properties: object): boolean {
     // All parameters are correct
     let valid: boolean = Object.keys(properties).reduce((accum: boolean, current: string) => VALID_PARAMS[operation].includes(current) && accum, true);
 

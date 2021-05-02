@@ -26,6 +26,26 @@ export default class UNQfy {
     return artist;
   }
 
+  deleteArtist(artistId: string): void {
+    let albumIds: string[] = this.albums.filter(album => album.artist === artistId).map(album => album.id);
+
+    this.artists = this.artists.filter(artist => artist.id === artistId);
+
+    this.deleteAlbum(albumIds);
+  }
+
+  deleteAlbum(albumIds: string[]): void {
+    let trackIds = this.tracks.filter(track => albumIds.includes(track.album)).map(track => track.id);
+    
+    this.albums = this.albums.filter(album => !albumIds.includes(album.id));
+
+    this.deleteTrack(trackIds);
+  }
+
+  deleteTrack(trackIds: string[]): void {
+    this.tracks = this.tracks.filter(track => !trackIds.includes(track.id));
+  }
+
   addAlbum(artistId: string, albumData: {name: string, year: number}): Album {
     this.getArtistById(artistId)
     let { name, year } = albumData;
