@@ -132,9 +132,9 @@ export default class UNQfy {
     let playlist: Playlist = new Playlist(name);
 
     for(let i = 0; i < tracks.length; i++) {
-      if((playlist.duration + tracks[i].duration) > maxDuration) break;
-
-      playlist.addTrack(tracks[i]);
+      if((playlist.duration + tracks[i].duration) <= maxDuration){
+        playlist.addTrack(tracks[i]);
+      }
     }
 
     return playlist;
