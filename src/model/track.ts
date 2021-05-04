@@ -1,21 +1,27 @@
 import { generateId } from '../utils/utils';
 
 export default class Track {
-  private id: string;
+  private _id: string;
   private _name: string;
   private _album: string;
   private _duration: number;
   private _genres: string[];
 
   constructor(album: string, name: string, duration: number, genres: string[]) {
-    this.id = generateId();
+    this._id = generateId();
     this._name = name;
     this._album = album;
     this._duration = duration;
     this._genres = genres;
   }
 
-  public getId() { return this.id }
+  get id(): string {
+    return this._id;
+  }
+
+  set id(value: string) {
+    this._id = value;
+  }
 
   get name(): string {
     return this._name;

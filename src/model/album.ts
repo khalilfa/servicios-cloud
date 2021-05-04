@@ -1,19 +1,25 @@
 import { generateId } from '../utils/utils';
 
 export default class Album {
-  private id: string;
+  private _id: string;
   private _name: string;
   private _artist: string;
   private _year: number;
 
   constructor(artist: string, name: string, year: number) {
-    this.id = generateId();
+    this._id = generateId();
     this._name = name;
     this._artist = artist;
     this._year = year;
   }
 
-  getId() { return this.id }
+  get id(): string { 
+    return this._id;
+  }
+
+  set id(value: string) {
+    this._id = value;
+  }
 
   get name(): string {
     return this._name;
