@@ -3,6 +3,7 @@ import Track from './model/track';
 import Album from './model/album';
 import fs from 'fs';
 import EntityNotFoundError from './exceptions/entityNotFountError';
+import Playlist from './model/playlist';
 
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 
@@ -29,7 +30,7 @@ export default class UNQfy {
   deleteArtist(artistId: string): void {
     let albumIds: string[] = this.albums.filter(album => album.artist === artistId).map(album => album.id);
 
-    this.artists = this.artists.filter(artist => artist.id === artistId);
+    this.artists = this.artists.filter(artist => artist.id !== artistId);
 
     this.deleteAlbum(albumIds);
   }
@@ -91,10 +92,6 @@ export default class UNQfy {
     return track
   }
 
-  getPlaylistById(id: string) {
-
-  }
-
   getTracksMatchingGenres(genres: string[]): Track[] {
     return this.tracks.filter(track => track.genres.some(genre => genres.includes(genre)))
   }
@@ -109,6 +106,15 @@ export default class UNQfy {
     return tracks;
   }
 
+  searchByName(name: string) {
+    let data: object = {
+      artists: this.artists.filter(artist => artist.name.includes(name)),
+      albums: this.albums.filter(album => album.name.includes(name)),
+      tracks: this.tracks.filter(track => track.name.includes(name)),
+      // playlists: this.playlists.filter(playlist => playlist.name.includes(name)),
+    }
+  }
+
   private getArtistByName(artistName: string): Artist {
     let artist: Artist | undefined = this.artists.find(artist => artist.name.toLowerCase() === artistName.toLowerCase());
 
@@ -121,19 +127,17 @@ export default class UNQfy {
     return this.albums.filter(album => album.artist === artistId);
   }
 
+  createPlaylist(name: string, genresToInclude: string[], maxDuration: number): Playlist {
+    let tracks: Track[] = this.getTracksMatchingGenres(genresToInclude);
+    let playlist: Playlist = new Playlist(name);
 
-  // name: nombre de la playlist
-  // genresToInclude: array de generos
-  // maxDuration: duración en segundos
-  // retorna: la nueva playlist creada
-  createPlaylist(name: string, genresToInclude: string[], maxDuration: number) {
-  /*** Crea una playlist y la agrega a unqfy. ***
-    El objeto playlist creado debe soportar (al menos):
-      * una propiedad name (string)
-      * un metodo duration() que retorne la duración de la playlist.
-      * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
-  */
+    for(let i = 0; i < tracks.length; i++) {
+      if((playlist.duration + tracks[i].duration) > maxDuration) break;
 
+      playlist.addTrack(tracks[i]);
+    }
+
+    return playlist;
   }
 
   save(filename: string) {

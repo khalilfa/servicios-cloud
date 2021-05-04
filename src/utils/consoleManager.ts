@@ -5,8 +5,10 @@ import Album from '../model/album';
 import Artist from '../model/artist';
 import UNQfy from '../unqfy';
 import Track from '../model/track';
+import Playlist from '../model/playlist';
 
-const COMMANDS: string[] = ['addArtist', 'addAlbum', 'addTrack', 'tracksByGenres', 'tracksByArtist', 'deleteArtist', 'deleteAlbum', 'deleteTrack'];
+const COMMANDS: string[] = ['addArtist', 'addAlbum', 'addTrack', 'tracksByGenres', 'tracksByArtist', 'deleteArtist', 'deleteAlbum', 'deleteTrack',
+  'addPlaylist', 'search'];
 const VALID_PARAMS: any = {
   addArtist: ['name', 'country'],
   addAlbum: ['artist', 'name', 'year'],
@@ -16,6 +18,8 @@ const VALID_PARAMS: any = {
   deleteArtist: ['artist'],
   deleteAlbum: ['album'],
   deleteTrack: ['track'],
+  addPlaylist: ['name', 'genres', 'duration'],
+  search: ['name'],
 }
 
 export default class ConsoleManager {
@@ -135,6 +139,24 @@ class Command {
     this.unqfy.deleteTrack([trackId]);
 
     console.log('- Se elimino el track con id: ', trackId);
+  }
+
+  addPlaylist() {
+    let name: string = this.properties.name;
+    let duration: number = parseInt(this.properties.duration);
+    let genres: string[] = this.properties.genres.split(',').map((genre: string) => genre.trim());
+
+    let playlist: Playlist = this.unqfy.createPlaylist(name, genres, duration);
+
+    console.log('- Se agrego una nueva playlist: ', playlist);
+  }
+
+  search() {
+    let name: string = this.properties.name;
+
+    let data: any = this.unqfy.searchByName(name);
+
+    console.log('- Se encontraron los siguientes resultados: ', data);
   }
 
   validParams(operation: string, properties: object): boolean {

@@ -1,8 +1,7 @@
 /* eslint-env node, mocha */
 
+const UNQfy = require('../../dist/src/unqfy');
 const assert = require('chai').assert;
-const libunqfy = require('../unqfy');
-
 
 function createAndAddArtist(unqfy, artistName, country) {
   const artist = unqfy.addArtist({ name: artistName, country });
@@ -19,10 +18,10 @@ function createAndAddTrack(unqfy, albumId, trackName, trackDuraction, trackGenre
 
 
 describe('Add, remove and filter data', () => {
-  let unqfy = null;
+  let unqfy;
 
   beforeEach(() => {
-    unqfy = new libunqfy.UNQfy();
+    unqfy = new UNQfy();
   });
 
   it('should add an artist', () => {
@@ -106,7 +105,7 @@ describe('Add, remove and filter data', () => {
     createAndAddTrack(unqfy, album3.id, 'Another song', 500, ['classic']);
     createAndAddTrack(unqfy, album3.id, 'Another song II', 500, ['movie']);
 
-    const matchingTracks = unqfy.getTracksMatchingArtist(artist.name);
+    const matchingTracks = unqfy.getTracksMatchingArtist({ name: artist.name });
 
     assert.isArray(matchingTracks);
     assert.lengthOf(matchingTracks, 3);
@@ -117,10 +116,10 @@ describe('Add, remove and filter data', () => {
 });
 
 describe('Playlist Creation and properties', () => {
-  let unqfy = null;
+  let unqfy;
 
   beforeEach(() => {
-    unqfy = new libunqfy.UNQfy();
+    unqfy = new UNQfy();
   });
 
   it('should create a playlist as requested', () => {
@@ -138,7 +137,7 @@ describe('Playlist Creation and properties', () => {
     const playlist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
 
     assert.equal(playlist.name, 'my playlist');
-    assert.isAtMost(playlist.duration(), 1400);
+    assert.isAtMost(playlist.duration, 1400);
     assert.isTrue(playlist.hasTrack(t1));
     assert.isTrue(playlist.hasTrack(t2));
     assert.isTrue(playlist.hasTrack(t3));
