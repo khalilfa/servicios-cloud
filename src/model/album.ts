@@ -1,19 +1,28 @@
 import { generateId } from '../utils/utils';
+import Artist from "./artist";
+import Track from "./track";
 
 export default class Album {
   private _id: string;
   private _name: string;
-  private _artist: string;
+  private _tracks: Track[] = [];
   private _year: number;
 
-  constructor(artist: string, name: string, year: number) {
+  constructor(name: string, year: number) {
     this._id = generateId();
     this._name = name;
-    this._artist = artist;
     this._year = year;
   }
 
-  get id(): string { 
+  get tracks(): Track[] {
+    return this._tracks;
+  }
+
+  set tracks(value: Track[]) {
+    this._tracks = value;
+  }
+
+  get id(): string {
     return this._id;
   }
 
@@ -29,13 +38,6 @@ export default class Album {
     this._name = value;
   }
 
-  get artist(): string {
-    return this._artist;
-  }
-
-  set artist(value: string) {
-    this._artist = value;
-  }
 
   get year(): number {
     return this._year;
@@ -43,5 +45,13 @@ export default class Album {
 
   set year(value: number) {
     this._year = value;
+  }
+
+  deleteTrack(trackId: string) {
+    this.tracks = this.tracks.filter(track => track.id != trackId);
+  }
+
+  addTrack(track: Track) {
+    this._tracks.push(track)
   }
 }
