@@ -47,6 +47,12 @@ export default class UNQfy {
 
   deleteTrack(trackIds: string[]): void {
     this.tracks = this.tracks.filter(track => !trackIds.includes(track.id));
+
+    this.playlists.map(playlist => this.tracks.map(track => playlist.deleteTrack(track)));
+  }
+
+  deletePlaylist(playlistId: string): void {
+    this.playlists = this.playlists.filter(playlist => playlist.id !== playlistId);
   }
 
   addAlbum(artistId: string, albumData: {name: string, year: number}): Album {
@@ -71,27 +77,35 @@ export default class UNQfy {
   }
 
   getArtistById(id: string): Artist {
-    let artist = this.artists.find(value => value.id === id)
+    let artist: Artist | undefined = this.artists.find(value => value.id === id);
 
     if(!artist) throw new EntityNotFoundError("Album", id);
 
-    return artist
+    return artist;
   }
 
   getAlbumById(id: string) {
-    let album = this.albums.find(value => value.id === id)
+    let album: Album | undefined = this.albums.find(value => value.id === id);
 
     if(!album) throw new EntityNotFoundError("Album", id);
 
-    return album
+    return album;
   }
 
   getTrackById(id: string) {
-    let track = this.tracks.find(value => value.id === id)
+    let track: Track | undefined = this.tracks.find(value => value.id === id);
 
     if(!track) throw new EntityNotFoundError("Track", id);
 
     return track
+  }
+
+  getPlaylistById(id: string) {
+    let playlist: Playlist | undefined = this.playlists.find(value => value.id === id);
+
+    if(!playlist) throw new EntityNotFoundError("Playlist", id);
+
+    return playlist;
   }
 
   getTracksMatchingGenres(genres: string[]): Track[] {
