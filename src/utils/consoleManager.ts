@@ -8,7 +8,7 @@ import Track from '../model/track';
 import Playlist from '../model/playlist';
 
 const COMMANDS: string[] = ['addArtist', 'addAlbum', 'addTrack', 'tracksByGenres', 'tracksByArtist', 'deleteArtist', 'deleteAlbum', 'deleteTrack',
-  'addPlaylist', 'search'];
+  'addPlaylist', 'search', 'deletePlaylist', 'viewArtist', 'viewAlbum', 'viewTrack', 'viewPlaylist'];
 const VALID_PARAMS: any = {
   addArtist: ['name', 'country'],
   addAlbum: ['artist', 'name', 'year'],
@@ -18,8 +18,13 @@ const VALID_PARAMS: any = {
   deleteArtist: ['artist'],
   deleteAlbum: ['album'],
   deleteTrack: ['track'],
+  deletePlaylist: ['playlist'],
   addPlaylist: ['name', 'genres', 'duration'],
   search: ['name'],
+  viewArtist: ['artist'],
+  viewAlbum: ['album'],
+  viewTrack: ['track'],
+  viewPlaylist: ['playlist'],
 }
 
 export default class ConsoleManager {
@@ -90,6 +95,14 @@ class Command {
     console.log('- Se elimino el artista con id: ', artistId);
   }
 
+  viewArtist(): void {
+    let artistId: string = this.properties.artist;
+
+    let artist: Artist = this.unqfy.getArtistById(artistId);
+
+    console.log('- Los datos del artista son: ', artist);
+  }
+
   addAlbum(): void {
     let artistId: string = this.properties.artist;
 
@@ -106,6 +119,14 @@ class Command {
     this.unqfy.deleteAlbum([albumId]);
 
     console.log('- Se elimino el album con id: ', albumId);
+  }
+
+  viewAlbum(): void {
+    let albumId: string = this.properties.album;
+
+    let album: Album = this.unqfy.getAlbumById(albumId);
+
+    console.log('- Los datos del album son: ', album);
   }
 
   tracksByGenres(): void {
@@ -141,6 +162,14 @@ class Command {
     console.log('- Se elimino el track con id: ', trackId);
   }
 
+  viewTrack(): void {
+    let trackId: string = this.properties.track;
+
+    let track: Track = this.unqfy.getTrackById(trackId);
+
+    console.log('- Los datos del track son: ', track);
+  }
+
   addPlaylist() {
     let name: string = this.properties.name;
     let duration: number = parseInt(this.properties.duration);
@@ -149,6 +178,22 @@ class Command {
     let playlist: Playlist = this.unqfy.createPlaylist(name, genres, duration);
 
     console.log('- Se agrego una nueva playlist: ', playlist);
+  }
+
+  deletePlaylist() {
+    let playlistId: string = this.properties.playlist;
+
+    this.unqfy.deletePlaylist(playlistId);
+
+    console.log('- Se elimino la playlist con id: ', playlistId);
+  }
+
+  viewPlaylist(): void {
+    let playlistId: string = this.properties.playlist;
+
+    let playlist: Playlist = this.unqfy.getPlaylistById(playlistId);
+
+    console.log('- Los datos de la playlist son: ', playlist);
   }
 
   search() {
