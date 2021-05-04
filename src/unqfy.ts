@@ -4,6 +4,8 @@ import Album from './model/album';
 import fs from 'fs';
 import EntityNotFoundError from './exceptions/entityNotFountError';
 import Playlist from './model/playlist';
+import User from './model/user';
+import Listen from './model/listen';
 
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 
@@ -12,12 +14,37 @@ export default class UNQfy {
   private albums: Album[];
   private artists: Artist[];
   private playlists: Playlist[];
+  private users: User[];
 
   constructor() {
     this.tracks = [];
     this.albums = [];
     this.artists = [];
     this.playlists = [];
+    this.users = [];
+  }
+
+  addUser(name: string) {
+    let user: User = new User(name);
+
+    this.users.push(user);
+
+    return user;
+  }
+
+  listen(userId: string, trackId: string) {
+    let user: User = this.getUserById(userId);
+    let track: Track = this.getTrackById(trackId);
+
+    user.listen(track);
+  }
+
+  listened(userId: string): string[] {
+    let user: User = this.getUserById(userId);
+    let trackIds: string[] = user.listened.map(listen => listen.track);
+    let tracks: string[] = trackIds.map(trackId => this.getTrackById(trackId).name);
+
+    return tracks;
   }
 
   addArtist(artistData: {name: string, country: string}): Artist {
@@ -108,6 +135,14 @@ export default class UNQfy {
     return playlist;
   }
 
+  getUserById(id: string) {
+    let user: User | undefined = this.users.find(value => value.id === id);
+
+    if(!user) throw new EntityNotFoundError("User", id);
+
+    return user;
+  }
+
   getTracksMatchingGenres(genres: string[]): Track[] {
     return this.tracks.filter(track => track.genres.some(genre => genres.includes(genre)))
   }
@@ -167,7 +202,7 @@ export default class UNQfy {
 
   static load(filename: string) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
-    const classes = [UNQfy, Artist, Album, Track];
+    const classes = [UNQfy, Artist, Album, Track, Playlist, User, Listen];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }

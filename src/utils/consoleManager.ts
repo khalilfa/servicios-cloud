@@ -6,9 +6,12 @@ import Artist from '../model/artist';
 import UNQfy from '../unqfy';
 import Track from '../model/track';
 import Playlist from '../model/playlist';
+import User from '../model/user';
+import Listen from '../model/listen';
+
 
 const COMMANDS: string[] = ['addArtist', 'addAlbum', 'addTrack', 'tracksByGenres', 'tracksByArtist', 'deleteArtist', 'deleteAlbum', 'deleteTrack',
-  'addPlaylist', 'search', 'deletePlaylist', 'viewArtist', 'viewAlbum', 'viewTrack', 'viewPlaylist'];
+  'addPlaylist', 'search', 'deletePlaylist', 'viewArtist', 'viewAlbum', 'viewTrack', 'viewPlaylist', 'addUser', 'listen', 'listened'];
 const VALID_PARAMS: any = {
   addArtist: ['name', 'country'],
   addAlbum: ['artist', 'name', 'year'],
@@ -25,6 +28,9 @@ const VALID_PARAMS: any = {
   viewAlbum: ['album'],
   viewTrack: ['track'],
   viewPlaylist: ['playlist'],
+  addUser: ['name'],
+  listen: ['user', 'track'],
+  listened: ['user'],
 }
 
 export default class ConsoleManager {
@@ -80,6 +86,31 @@ class Command {
 
   getCommand(): string {
     return this.command;
+  }
+
+  listen() {
+    let userId: string = this.properties.user;
+    let trackId: string = this.properties.track;
+
+    this.unqfy.listen(userId, trackId);
+
+    console.log(`- El usuario ${userId} escucho el tema ${trackId}`);
+  }
+
+  listened() {
+    let userId: string = this.properties.user;
+    
+    let listened: string[] = this.unqfy.listened(userId);
+
+    console.log('- Temas escuchados por el usuario: ', listened);
+  }
+
+  addUser(): void {
+    let name: string = this.properties.name;
+
+    let user: User = this.unqfy.addUser(name);
+
+    console.log('- Se agrego un nuevo usuario: ', user);
   }
 
   addArtist(): void {
