@@ -11,11 +11,13 @@ export default class UNQfy {
   private tracks: Track[];
   private albums: Album[];
   private artists: Artist[];
+  private playlists: Playlist[];
 
   constructor() {
     this.tracks = [];
     this.albums = [];
     this.artists = [];
+    this.playlists = [];
   }
 
   addArtist(artistData: {name: string, country: string}): Artist {
@@ -111,8 +113,10 @@ export default class UNQfy {
       artists: this.artists.filter(artist => artist.name.includes(name)),
       albums: this.albums.filter(album => album.name.includes(name)),
       tracks: this.tracks.filter(track => track.name.includes(name)),
-      // playlists: this.playlists.filter(playlist => playlist.name.includes(name)),
+      playlists: this.playlists.filter(playlist => playlist.name.includes(name)),
     }
+
+    return data;
   }
 
   private getArtistByName(artistName: string): Artist {
@@ -136,6 +140,8 @@ export default class UNQfy {
 
       playlist.addTrack(tracks[i]);
     }
+
+    this.playlists.push(playlist);
 
     return playlist;
   }
