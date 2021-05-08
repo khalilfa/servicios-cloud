@@ -101,9 +101,11 @@ export default class UNQfy {
     return playlist;
   }
 
-  // getTracksMatchingGenres(genres: string[]): Track[] {
-  //  return this.tracks.filter(track => track.genres.some(genre => genres.includes(genre)))
-  // }
+  getTracksMatchingGenres(genres: string[]): Track[] {
+   let tracks : Track[] = [];
+   this.artists.forEach(value => tracks.concat(value.getTracksMatchingGenres(genres)))
+   return tracks
+  }
 
   // getTracksMatchingArtist(artistData: {name: string}): Track[] {
   //   let artistName: string = artistData.name;

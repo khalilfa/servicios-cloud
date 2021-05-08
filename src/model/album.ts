@@ -58,4 +58,8 @@ export default class Album {
   getTrackById(id: string) {
     return this._tracks.find(value => value.id == id);
   }
+
+  getTracksMatchingGenres(genres: string[]) {
+    return this._tracks.filter(track => track.genres.some(genre => genres.includes(genre)))
+  }
 }
