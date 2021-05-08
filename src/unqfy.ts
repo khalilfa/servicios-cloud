@@ -24,16 +24,25 @@ export default class UNQfy {
     return artist;
   }
 
-  addAlbum(artistId: string, albumData: {name: string, year: number}) {
+  addAlbum(artistId: string, albumData: {name: string, year: number}): Album {
+    let album: Album  | undefined;
     this.artists.forEach(artist => {
       if(artist.id === artistId){
-        artist.addAlbum(new Album(albumData.name, albumData.year))
+        album = new Album(albumData.name, albumData.year)
+        artist.addAlbum(album)
       }
     })
+    if (!album) throw new EntityNotFoundError("Artist", artistId);
+    return album
   }
 
   addTrack(albumId: string, trackData: {name: string, duration: number, genres: string[]}) {
-    this.artists.forEach(value => value.addTrack(albumId, trackData))
+    let track: Track  | undefined;
+    for (let i = 0; i < this.artists.length; i++) {
+      track = this.artists[i].addTrack(albumId, trackData)
+      if(track) break
+    }
+    if (!track) throw new EntityNotFoundError("Album", albumId);
   }
 
   deleteArtist(artistId: string): void {
@@ -60,17 +69,24 @@ export default class UNQfy {
     return artist;
   }
 
-  getAlbumById(id: string) {
+  getAlbumById(id: string): Album {
     let album: Album | undefined;
-    this.artists.forEach(value => album = value.getAlgumById(id))
+    for (let i = 0; i < this.artists.length; i++) {
+      this.artists[i].getAlgumById(id)
+      if (album) break
+    }
 
     if(!album) throw new EntityNotFoundError("Album", id);
 
     return album;
   }
 
-  getTrackById(id: string) {
-    let track: Track | undefined = this.tracks.find(value => value.id === id);
+  getTrackById(id: string): Track {
+    let track: Track | undefined;
+    for (let i = 0; i < this.artists.length; i++) {
+      track = this.artists[i].getTrackById(id)
+      if(track) break
+    }
 
     if(!track) throw new EntityNotFoundError("Track", id);
 
@@ -85,30 +101,30 @@ export default class UNQfy {
     return playlist;
   }
 
-  getTracksMatchingGenres(genres: string[]): Track[] {
-    return this.tracks.filter(track => track.genres.some(genre => genres.includes(genre)))
-  }
+  // getTracksMatchingGenres(genres: string[]): Track[] {
+  //  return this.tracks.filter(track => track.genres.some(genre => genres.includes(genre)))
+  // }
 
   // getTracksMatchingArtist(artistData: {name: string}): Track[] {
   //   let artistName: string = artistData.name;
   //   let artistId: string = this.getArtistByName(artistName).id;
   //   let albumIds: string[] = this.getAlbumsByArtist(artistId).map(album => album.id);
   //
-  //   let tracks: Track[] = this.tracks.filter(track => albumIds.includes(track.album));
+  //  let tracks: Track[] = this.tracks.filter(track => albumIds.includes(track.album));
   //
   //   return tracks;
   // }
 
-  // searchByName(name: string) {
-  //   let data: object = {
-  //     artists: this.artists.filter(artist => artist.name.includes(name)),
-  //     albums: this.albums.filter(album => album.name.includes(name)),
-  //     tracks: this.tracks.filter(track => track.name.includes(name)),
-  //     playlists: this.playlists.filter(playlist => playlist.name.includes(name)),
-  //   }
-  //
-  //   return data;
-  // }
+  searchByName(name: string) {
+    // let data: object = {
+    //   artists: this.artists.filter(artist => artist.name.includes(name)),
+    //   albums: this.albums.filter(album => album.name.includes(name)),
+    //   tracks: this.tracks.filter(track => track.name.includes(name)),
+    //   playlists: this.playlists.filter(playlist => playlist.name.includes(name)),
+    // }
+    //
+    // return data;
+  }
 
   private getArtistByName(artistName: string): Artist {
     let artist: Artist | undefined = this.artists.find(artist => artist.name.toLowerCase() === artistName.toLowerCase());
@@ -126,20 +142,20 @@ export default class UNQfy {
 
   }
 
-  createPlaylist(name: string, genresToInclude: string[], maxDuration: number): Playlist {
-    let tracks: Track[] = this.getTracksMatchingGenres(genresToInclude);
-    let playlist: Playlist = new Playlist(name);
-
-    for(let i = 0; i < tracks.length; i++) {
-      if((playlist.duration + tracks[i].duration) <= maxDuration){
-        playlist.addTrack(tracks[i]);
-      }
-    }
-
-    this.playlists.push(playlist);
-
-    return playlist;
-  }
+  // createPlaylist(name: string, genresToInclude: string[], maxDuration: number): Playlist {
+  //   let tracks: Track[] = this.getTracksMatchingGenres(genresToInclude);
+  //   let playlist: Playlist = new Playlist(name);
+  //
+  //   for(let i = 0; i < tracks.length; i++) {
+  //     if((playlist.duration + tracks[i].duration) <= maxDuration){
+  //       playlist.addTrack(tracks[i]);
+  //     }
+  //   }
+  //
+  //   this.playlists.push(playlist);
+  //
+  //   return playlist;
+  // }
 
   save(filename: string) {
     const serializedData = picklify.picklify(this);
