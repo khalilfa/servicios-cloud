@@ -89,4 +89,17 @@ export default class Artist {
     this.albums.forEach(value => tracks.concat(value.getTracksMatchingGenres(genres)))
     return tracks
   }
+  
+  search(name: string) : any[]{
+    let result: any[] = [];
+    this.albums.forEach(
+      album => {
+        if (album.name.includes(name)) { 
+          result.push(album);
+        }
+        result.push(album.search(name))
+      }); 
+      
+    return result;
+  }
 }

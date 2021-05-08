@@ -180,9 +180,11 @@ class Command {
     let genres: string[] = this.properties.genres.split(',').map((genre: string) => genre.trim());
     let duration: number = parseInt(this.properties.duration);
     let trackData: { name: string; duration: number; genres: string[]; } = {...this.properties, genres, duration};
-
-    let track: Track = this.unqfy.addTrack(albumId, trackData);
-    console.log('- Se agrego un nuevo track: ', track);
+    //** SD 
+    // let track: Track = this.unqfy.addTrack(albumId, trackData);
+    this.unqfy.addTrack(albumId, trackData);
+    console.log('- Se agrego un nuevo track: ');
+    //*
   }
 
   deleteTrack() {
@@ -205,10 +207,10 @@ class Command {
     let name: string = this.properties.name;
     let duration: number = parseInt(this.properties.duration);
     let genres: string[] = this.properties.genres.split(',').map((genre: string) => genre.trim());
+    //refactor
+    // let playlist: Playlist = this.unqfy.createPlaylist(name, genres, duration);
 
-    let playlist: Playlist = this.unqfy.createPlaylist(name, genres, duration);
-
-    console.log('- Se agrego una nueva playlist: ', playlist);
+    console.log('- Se agrego una nueva playlist: ');
   }
 
   deletePlaylist() {

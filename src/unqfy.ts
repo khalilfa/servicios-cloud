@@ -6,6 +6,7 @@ import EntityNotFoundError from './exceptions/entityNotFountError';
 import Playlist from './model/playlist';
 import User from './model/user';
 import Listen from './model/listen';
+import { Console } from 'node:console';
 
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 
@@ -142,25 +143,30 @@ export default class UNQfy {
    return tracks
   }
 
-  // getTracksMatchingArtist(artistData: {name: string}): Track[] {
+   getTracksMatchingArtist(artistData: {name: string}): Track[] {
+     //refactorizar
   //   let artistName: string = artistData.name;
   //   let artistId: string = this.getArtistByName(artistName).id;
   //   let albumIds: string[] = this.getAlbumsByArtist(artistId).map(album => album.id);
   //
   //  let tracks: Track[] = this.tracks.filter(track => albumIds.includes(track.album));
   //
-  //   return tracks;
-  // }
+      return [new Track('asdd', 22, ['asdd'])];
+   }
 
-  searchByName(name: string) {
-    // let data: object = {
-    //   artists: this.artists.filter(artist => artist.name.includes(name)),
-    //   albums: this.albums.filter(album => album.name.includes(name)),
-    //   tracks: this.tracks.filter(track => track.name.includes(name)),
-    //   playlists: this.playlists.filter(playlist => playlist.name.includes(name)),
-    // }
-    //
-    // return data;
+  searchByName(name: string) : any[] {
+    let result: any[] = [];
+    this.artists.forEach(
+      artist => {
+        if (artist.name.includes(name)) { 
+          result.push(artist);
+        }
+        result.push(artist.search(name))
+      }); 
+      result.push(this.users.filter(user => user.name.includes(name)));
+      result.push(this.playlists.filter(playlist => playlist.name.includes(name)));
+      // array flatten
+      return result.reduce((acc, val) => acc.concat(val), []);
   }
 
   private getArtistByName(artistName: string): Artist {
@@ -179,6 +185,7 @@ export default class UNQfy {
 
   }
 
+   // refactor SD
   // createPlaylist(name: string, genresToInclude: string[], maxDuration: number): Playlist {
   //   let tracks: Track[] = this.getTracksMatchingGenres(genresToInclude);
   //   let playlist: Playlist = new Playlist(name);

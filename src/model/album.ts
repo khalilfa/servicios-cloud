@@ -62,4 +62,8 @@ export default class Album {
   getTracksMatchingGenres(genres: string[]) {
     return this._tracks.filter(track => track.genres.some(genre => genres.includes(genre)))
   }
+
+  search(name: string) : any[]{
+    return this.tracks.filter(track =>  track.name.includes(name) ); 
+  }
 }
