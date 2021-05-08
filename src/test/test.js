@@ -32,6 +32,11 @@ describe('Add, remove and filter data', () => {
 
   });
 
+
+  it('should get an album by id', function () {
+
+  });
+
   it('should delete artist', function () {
     const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
     unqfy.deleteArtist(artist.id)

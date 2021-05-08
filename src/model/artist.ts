@@ -64,11 +64,29 @@ export default class Artist {
     this._albums.push(album)
   }
 
-  addTrack(albumId: string, trackData: { name: string; duration: number; genres: string[] }) {
+  addTrack(albumId: string, trackData: { name: string; duration: number; genres: string[] }): Track | undefined {
+    let track: Track  | undefined;
     this.albums.forEach(album => {
       if(album.id === albumId){
-        album.addTrack(new Track(trackData.name, trackData.duration, trackData.genres))
+        track = new Track(trackData.name, trackData.duration, trackData.genres)
+        album.addTrack(track)
       }
     })
+    return track
+  }
+
+  getTrackById(id: string): Track | undefined {
+    let track: Track | undefined;
+    for (let i = 0; i < this.albums.length; i++) {
+      track = this.albums[i].getTrackById(id)
+      if(track) break
+    }
+    return track
+  }
+
+  getTracksMatchingGenres(genres: string[]) {
+    let tracks : Track[] = [];
+    this.albums.forEach(value => tracks.concat(value.getTracksMatchingGenres(genres)))
+    return tracks
   }
 }
