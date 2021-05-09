@@ -95,6 +95,7 @@ export default class UNQfy {
       if(track) break
     }
     if (!track) throw new EntityNotFoundError("Album", albumId);
+    return track
   }
 
   deleteArtist(artistId: string): void {
@@ -163,7 +164,7 @@ export default class UNQfy {
 
   getTracksMatchingGenres(genres: string[]): Track[] {
    let tracks : Track[] = [];
-   this.artists.forEach(value => tracks.concat(value.getTracksMatchingGenres(genres)))
+   this.artists.forEach(value => tracks = tracks.concat(value.getTracksMatchingGenres(genres)))
    return tracks
   }
 
@@ -206,10 +207,10 @@ export default class UNQfy {
 
   }
 
-   // refactor SD
-  createPlaylist(name: string, genre: string, maxDuration: number): Playlist {
+
+  createPlaylist(name: string, genre: [string], maxDuration: number): Playlist {
     let playlist: Playlist = new Playlist(name);
-    let tracks : Track[] = this.searchTracksByGenre(genre);
+    let tracks : Track[] = this.getTracksMatchingGenres(genre);
     let trackIndex : number = this.getRandomArbitrary(0,tracks.length)
 
     for(let duration = 0; duration < maxDuration || tracks.length === 0; duration += tracks[trackIndex].duration) {
@@ -221,11 +222,6 @@ export default class UNQfy {
      return playlist;
    }
 
-   searchTracksByGenre(genre: string) : Track[]{
-    let allTracks: any[] = [];
-    this.artists.forEach(artist => allTracks.push(artist.searchTracksByGender(genre))) ;
-    return allTracks.reduce((acc, val) => acc.concat(val), []);
-   }
 
    private getRandomArbitrary(min : number, max : number) : number {
     return Math.random() * (max - min) + min;

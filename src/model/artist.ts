@@ -85,7 +85,7 @@ export default class Artist {
 
   getTracksMatchingGenres(genres: string[]) {
     let tracks : Track[] = [];
-    this.albums.forEach(value => tracks.concat(value.getTracksMatchingGenres(genres)))
+    this.albums.forEach(value => tracks = tracks.concat(value.getTracksMatchingGenres(genres)))
     return tracks
   }
 
@@ -110,7 +110,7 @@ export default class Artist {
 
   getTracks() : Track[]{
     let allTracks: any[] = [];
-    this.albums.forEach(album => allTracks.push(album.tracks));
+    this.albums.forEach(album => allTracks = allTracks.concat(album.tracks));
     return allTracks;
   }
 
