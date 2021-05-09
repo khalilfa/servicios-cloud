@@ -193,7 +193,7 @@ export default class UNQfy {
 
     for(let duration = 0; duration < maxDuration || tracks.length === 0; duration += tracks[trackIndex].duration) {
       playlist.addTrack(tracks[trackIndex]);
-      tracks.splice(trackIndex,1);
+      tracks = tracks.splice(trackIndex,1);
       trackIndex = this.getRandomArbitrary(0,tracks.length) ;
     }
 
