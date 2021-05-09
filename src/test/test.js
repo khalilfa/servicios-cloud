@@ -32,6 +32,26 @@ describe('Add, remove and filter data', () => {
 
   });
 
+
+  it('should get an album by id', function () {
+
+  });
+
+  it('should delete artist', function () {
+    const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+    unqfy.deleteArtist(artist.id)
+
+    assert.isEmpty(unqfy.artists)
+  });
+
+  it('should delete album', function () {
+    const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+    const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+    unqfy.deleteAlbum(album.id)
+
+    assert.isEmpty(unqfy.artists)
+  });
+
   it('should add an album to an artist', () => {
     const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
     const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);

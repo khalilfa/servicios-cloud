@@ -147,7 +147,7 @@ class Command {
   deleteAlbum(): void {
     let albumId: string = this.properties.album;
     
-    this.unqfy.deleteAlbum([albumId]);
+    this.unqfy.deleteAlbum(albumId);
 
     console.log('- Se elimino el album con id: ', albumId);
   }
@@ -188,7 +188,7 @@ class Command {
   deleteTrack() {
     let trackId: string = this.properties.track;
 
-    this.unqfy.deleteTrack([trackId]);
+    this.unqfy.deleteTrack(trackId);
 
     console.log('- Se elimino el track con id: ', trackId);
   }
