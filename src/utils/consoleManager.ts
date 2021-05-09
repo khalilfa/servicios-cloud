@@ -11,7 +11,8 @@ import Listen from '../model/listen';
 
 
 const COMMANDS: string[] = ['addArtist', 'addAlbum', 'addTrack', 'tracksByGenres', 'tracksByArtist', 'deleteArtist', 'deleteAlbum', 'deleteTrack',
-  'addPlaylist', 'search', 'deletePlaylist', 'viewArtist', 'viewAlbum', 'viewTrack', 'viewPlaylist', 'addUser', 'listen', 'listened'];
+  'addPlaylist', 'search', 'deletePlaylist', 'viewArtist', 'viewAlbum', 'viewTrack', 'viewPlaylist', 'addUser', 'listen', 'listened',
+  'howManyListen', 'thisIs'];
 const VALID_PARAMS: any = {
   addArtist: ['name', 'country'],
   addAlbum: ['artist', 'name', 'year'],
@@ -31,6 +32,8 @@ const VALID_PARAMS: any = {
   addUser: ['name'],
   listen: ['user', 'track'],
   listened: ['user'],
+  howManyListen: ['user', 'track'],
+  thisIs: ['artist'],
 }
 
 export default class ConsoleManager {
@@ -103,6 +106,23 @@ class Command {
     let listened: string[] = this.unqfy.listened(userId);
 
     console.log('- Temas escuchados por el usuario: ', listened);
+  }
+
+  howManyListen() {
+    let userId: string = this.properties.user;
+    let trackId: string = this.properties.track;
+
+    let count: number = this.unqfy.howManyListen(userId, trackId);
+
+    console.log(`- El usuario ${userId} escucho el tema ${count} veces`);
+  }
+
+  thisIs() {
+    let artistId: string = this.properties.artist;
+
+    let playlist: Playlist = this.unqfy.thisIs(artistId);
+
+    console.log(`- La lista "This is" del artista ${artistId} es: `, playlist);
   }
 
   addUser(): void {

@@ -37,10 +37,34 @@ export default class UNQfy {
 
   listened(userId: string): string[] {
     let user: User = this.getUserById(userId);
-    let trackIds: string[] = user.listened.map(listen => listen.track);
+    let trackIds: string[] = user.listened.map(listen => listen.track.id);
     let tracks: string[] = trackIds.map(trackId => this.getTrackById(trackId).name);
 
     return tracks;
+  }
+
+  howManyListen(userId: string, trackId: string): number {
+    let user: User = this.getUserById(userId);
+    let track: Track = this.getTrackById(trackId);
+
+    let listen: Listen | undefined = user.getListenByTrack(track);
+
+    if(!listen) return 0;
+
+    return listen.count;
+  }
+
+  thisIs(artistId: string): Playlist{
+    let artist: Artist = this.getArtistById(artistId);
+    let tracks: Track[] = artist.getAllTracks();
+
+    let tracksByCount: {track: Track, count: number}[] = tracks.map(track => ({ track, count: this.users.reduce((acc, usr) => acc + this.howManyListen(usr.id, track.id), 0) }) );
+    let top3: {track: Track, count: number}[] = tracksByCount.sort((a, b) => a.count - b.count).slice(0, 3);
+
+    let playlist: Playlist = new Playlist(`This is ${artist.name}`);
+    top3.forEach(elem => playlist.addTrack(elem.track));
+
+    return playlist;
   }
 
   addArtist(artistData: {name: string, country: string}): Artist {
@@ -99,7 +123,7 @@ export default class UNQfy {
   getAlbumById(id: string): Album {
     let album: Album | undefined;
     for (let i = 0; i < this.artists.length; i++) {
-      this.artists[i].getAlgumById(id)
+      this.artists[i].getAlbumById(id)
       if (album) break
     }
 

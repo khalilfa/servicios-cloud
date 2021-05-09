@@ -17,9 +17,9 @@ export default class User {
   get name() { return this._name }
   get listened() { return this._listened }
 
-  listen(track: Track) {
-    if(this._listened.some(listen => listen.track === track.id)) {
-      let listen: Listen = <Listen> this._listened.find(elem => elem.track === track.id);
+  listen(track: Track): void {
+    if(this._listened.some(listen => listen.track.id === track.id)) {
+      let listen: Listen = <Listen> this._listened.find(elem => elem.track.id === track.id);
 
       listen.addListen();
     } else {
@@ -27,6 +27,12 @@ export default class User {
     
       this._listened.push(listen)
     }
+  }
+
+  getListenByTrack(track: Track): Listen | undefined {
+    let listen: Listen | undefined = this._listened.find(l => l.track.id === track.id);
+
+    return listen;
   }
 
 
