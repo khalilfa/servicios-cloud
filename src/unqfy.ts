@@ -185,7 +185,6 @@ export default class UNQfy {
 
   }
 
-   // refactor SD
   createPlaylist(name: string, genre: string, maxDuration: number): Playlist {
     let playlist: Playlist = new Playlist(name);
     let tracks : Track[] = this.searchTracksByGender(genre);
