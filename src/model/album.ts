@@ -3,6 +3,7 @@ import Artist from "./artist";
 import Track from "./track";
 
 export default class Album {
+
   private _id: string;
   private _name: string;
   private _tracks: Track[] = [];
@@ -62,4 +63,10 @@ export default class Album {
   getTracksMatchingGenres(genres: string[]) {
     return this._tracks.filter(track => track.genres.some(genre => genres.includes(genre)))
   }
+
+  search(name: string) : any[]{
+    return this.tracks.filter(track =>  track.name.includes(name) ); 
+  }
+
+
 }

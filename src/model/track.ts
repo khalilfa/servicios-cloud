@@ -44,4 +44,5 @@ export default class Track {
   set genres(value: string[]) {
     this._genres = value;
   }
+
 }

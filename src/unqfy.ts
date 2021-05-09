@@ -6,6 +6,7 @@ import EntityNotFoundError from './exceptions/entityNotFountError';
 import Playlist from './model/playlist';
 import User from './model/user';
 import Listen from './model/listen';
+import { Console } from 'node:console';
 
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 
@@ -166,25 +167,30 @@ export default class UNQfy {
    return tracks
   }
 
-  // getTracksMatchingArtist(artistData: {name: string}): Track[] {
-  //   let artistName: string = artistData.name;
-  //   let artistId: string = this.getArtistByName(artistName).id;
-  //   let albumIds: string[] = this.getAlbumsByArtist(artistId).map(album => album.id);
-  //
-  //  let tracks: Track[] = this.tracks.filter(track => albumIds.includes(track.album));
-  //
-  //   return tracks;
-  // }
 
-  searchByName(name: string) {
-    // let data: object = {
-    //   artists: this.artists.filter(artist => artist.name.includes(name)),
-    //   albums: this.albums.filter(album => album.name.includes(name)),
-    //   tracks: this.tracks.filter(track => track.name.includes(name)),
-    //   playlists: this.playlists.filter(playlist => playlist.name.includes(name)),
-    // }
-    //
-    // return data;
+
+   getTracksMatchingArtist(artistData: {name: string}): Track[] {
+
+    let artist: Artist | undefined = this.artists.find(artist => artist.name === artistData.name);
+      if(!artist){
+        throw new EntityNotFoundError("Artist", artistData.name);
+      }  
+    return artist.getTracks();
+   }
+
+  searchByName(name: string) : any[] {
+    let result: any[] = [];
+    this.artists.forEach(
+      artist => {
+        if (artist.name.includes(name)) { 
+          result.push(artist);
+        }
+        result.push(artist.search(name))
+      }); 
+      result.push(this.users.filter(user => user.name.includes(name)));
+      result.push(this.playlists.filter(playlist => playlist.name.includes(name)));
+      // array flatten
+      return result.reduce((acc, val) => acc.concat(val), []);
   }
 
   private getArtistByName(artistName: string): Artist {
@@ -203,20 +209,30 @@ export default class UNQfy {
 
   }
 
-  // createPlaylist(name: string, genresToInclude: string[], maxDuration: number): Playlist {
-  //   let tracks: Track[] = this.getTracksMatchingGenres(genresToInclude);
-  //   let playlist: Playlist = new Playlist(name);
-  //
-  //   for(let i = 0; i < tracks.length; i++) {
-  //     if((playlist.duration + tracks[i].duration) <= maxDuration){
-  //       playlist.addTrack(tracks[i]);
-  //     }
-  //   }
-  //
-  //   this.playlists.push(playlist);
-  //
-  //   return playlist;
-  // }
+   // refactor SD
+  createPlaylist(name: string, genre: string, maxDuration: number): Playlist {
+    let playlist: Playlist = new Playlist(name);
+    let tracks : Track[] = this.searchTracksByGender(genre);
+    let trackIndex : number = this.getRandomArbitrary(0,tracks.length)
+
+    for(let duration = 0; duration < maxDuration || tracks.length === 0; duration += tracks[trackIndex].duration) {
+      playlist.addTrack(tracks[trackIndex]);
+      tracks = tracks.splice(trackIndex,1);
+      trackIndex = this.getRandomArbitrary(0,tracks.length) ;
+    }
+
+     return playlist;
+   }
+
+   searchTracksByGender(genre: string) : Track[]{
+    let allTracks: any[] = [];
+    this.artists.forEach(artist => allTracks.push(artist.searchTracksByGender(genre))) ;
+    return allTracks.reduce((acc, val) => acc.concat(val), []);
+   }
+
+   private getRandomArbitrary(min : number, max : number) : number {
+    return Math.random() * (max - min) + min;
+  }
 
   save(filename: string) {
     const serializedData = picklify.picklify(this);

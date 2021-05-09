@@ -1,5 +1,6 @@
 import { generateId } from '../utils/utils';
 import Album from "./album";
+import validate = WebAssembly.validate;
 import Track from "./track";
 
 export default class Artist {
@@ -94,4 +95,30 @@ export default class Artist {
 
     return tracks;
   }
+
+  search(name: string) : any[]{
+    let result: any[] = [];
+    this.albums.forEach(
+      album => {
+        if (album.name.includes(name)) {
+          result.push(album);
+        }
+        result.push(album.search(name))
+      });
+
+    return result;
+  }
+
+  getTracks() : Track[]{
+    let allTracks: any[] = [];
+    this.albums.forEach(album => allTracks.push(album.tracks));
+    return allTracks;
+  }
+
+  searchTracksByGender(genre: string) : Track[]{
+      let allTracks: any[] = [];
+      this.albums.forEach(album => allTracks.push(album.getTracksMatchingGenres([genre]))) ;
+      return allTracks.reduce((acc, val) => acc.concat(val), []);
+   }
+
 }
