@@ -143,15 +143,15 @@ export default class UNQfy {
    return tracks
   }
 
+
+
    getTracksMatchingArtist(artistData: {name: string}): Track[] {
-     //refactorizar
-  //   let artistName: string = artistData.name;
-  //   let artistId: string = this.getArtistByName(artistName).id;
-  //   let albumIds: string[] = this.getAlbumsByArtist(artistId).map(album => album.id);
-  //
-  //  let tracks: Track[] = this.tracks.filter(track => albumIds.includes(track.album));
-  //
-      return [new Track('asdd', 22, ['asdd'])];
+
+    let artist: Artist | undefined = this.artists.find(artist => artist.name === artistData.name);
+      if(!artist){
+        throw new EntityNotFoundError("Artist", artistData.name);
+      }  
+    return artist.getTracks();
    }
 
   searchByName(name: string) : any[] {
@@ -186,20 +186,29 @@ export default class UNQfy {
   }
 
    // refactor SD
-  // createPlaylist(name: string, genresToInclude: string[], maxDuration: number): Playlist {
-  //   let tracks: Track[] = this.getTracksMatchingGenres(genresToInclude);
-  //   let playlist: Playlist = new Playlist(name);
-  //
-  //   for(let i = 0; i < tracks.length; i++) {
-  //     if((playlist.duration + tracks[i].duration) <= maxDuration){
-  //       playlist.addTrack(tracks[i]);
-  //     }
-  //   }
-  //
-  //   this.playlists.push(playlist);
-  //
-  //   return playlist;
-  // }
+  createPlaylist(name: string, genre: string, maxDuration: number): Playlist {
+    let playlist: Playlist = new Playlist(name);
+    let tracks : Track[] = this.searchTracksByGender(genre);
+    let trackIndex : number = this.getRandomArbitrary(0,tracks.length)
+
+    for(let duration = 0; duration < maxDuration || tracks.length === 0; duration += tracks[trackIndex].duration) {
+      playlist.addTrack(tracks[trackIndex]);
+      tracks.splice(trackIndex,1);
+      trackIndex = this.getRandomArbitrary(0,tracks.length) ;
+    }
+
+     return playlist;
+   }
+
+   searchTracksByGender(genre: string) : Track[]{
+    let allTracks: any[] = [];
+    this.artists.forEach(artist => allTracks.push(artist.searchTracksByGender(genre))) ;
+    return allTracks.reduce((acc, val) => acc.concat(val), []);
+   }
+
+   private getRandomArbitrary(min : number, max : number) : number {
+    return Math.random() * (max - min) + min;
+  }
 
   save(filename: string) {
     const serializedData = picklify.picklify(this);

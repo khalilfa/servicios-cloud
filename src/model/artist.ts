@@ -102,4 +102,17 @@ export default class Artist {
       
     return result;
   }
+
+  getTracks() : Track[]{
+    let allTracks: any[] = [];
+    this.albums.forEach(album => allTracks.push(album.tracks));
+    return allTracks;
+  }
+
+  searchTracksByGender(genre: string) : Track[]{
+      let allTracks: any[] = [];
+      this.albums.forEach(album => allTracks.push(album.getTracksMatchingGenres([genre]))) ;
+      return allTracks.reduce((acc, val) => acc.concat(val), []);
+   }
+
 }

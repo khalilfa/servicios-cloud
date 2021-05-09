@@ -3,6 +3,7 @@ import Artist from "./artist";
 import Track from "./track";
 
 export default class Album {
+
   private _id: string;
   private _name: string;
   private _tracks: Track[] = [];
@@ -66,4 +67,6 @@ export default class Album {
   search(name: string) : any[]{
     return this.tracks.filter(track =>  track.name.includes(name) ); 
   }
+
+
 }
