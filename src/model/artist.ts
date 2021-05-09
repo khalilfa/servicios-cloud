@@ -1,6 +1,5 @@
 import { generateId } from '../utils/utils';
 import Album from "./album";
-import validate = WebAssembly.validate;
 import Track from "./track";
 
 export default class Artist {
@@ -56,7 +55,7 @@ export default class Artist {
     this.albums.map(album => album.deleteTrack(trackId))
   }
 
-  getAlgumById(id: string): Album | undefined {
+  getAlbumById(id: string): Album | undefined {
     return this._albums.find(album => album.id === id);
   }
 
@@ -89,17 +88,23 @@ export default class Artist {
     this.albums.forEach(value => tracks.concat(value.getTracksMatchingGenres(genres)))
     return tracks
   }
-  
+
+  getAllTracks(): Track[] {
+    let tracks: Track[] = this.albums.map(album => album.tracks).flat();
+
+    return tracks;
+  }
+
   search(name: string) : any[]{
     let result: any[] = [];
     this.albums.forEach(
       album => {
-        if (album.name.includes(name)) { 
+        if (album.name.includes(name)) {
           result.push(album);
         }
         result.push(album.search(name))
-      }); 
-      
+      });
+
     return result;
   }
 
