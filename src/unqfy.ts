@@ -167,16 +167,13 @@ export default class UNQfy {
    return tracks
   }
 
-
-
-   getTracksMatchingArtist(artistData: {name: string}): Track[] {
-
-    let artist: Artist | undefined = this.artists.find(artist => artist.name === artistData.name);
-      if(!artist){
-        throw new EntityNotFoundError("Artist", artistData.name);
-      }  
-    return artist.getTracks();
-   }
+  getTracksMatchingArtist(artistData: {name: string}): Track[] {
+   let artist: Artist | undefined = this.artists.find(artist => artist.name === artistData.name);
+     if(!artist){
+       throw new EntityNotFoundError("Artist", artistData.name);
+     }
+   return artist.getTracks();
+  }
 
   searchByName(name: string) : any[] {
     let result: any[] = [];
@@ -212,7 +209,7 @@ export default class UNQfy {
    // refactor SD
   createPlaylist(name: string, genre: string, maxDuration: number): Playlist {
     let playlist: Playlist = new Playlist(name);
-    let tracks : Track[] = this.searchTracksByGender(genre);
+    let tracks : Track[] = this.searchTracksByGenre(genre);
     let trackIndex : number = this.getRandomArbitrary(0,tracks.length)
 
     for(let duration = 0; duration < maxDuration || tracks.length === 0; duration += tracks[trackIndex].duration) {
@@ -224,7 +221,7 @@ export default class UNQfy {
      return playlist;
    }
 
-   searchTracksByGender(genre: string) : Track[]{
+   searchTracksByGenre(genre: string) : Track[]{
     let allTracks: any[] = [];
     this.artists.forEach(artist => allTracks.push(artist.searchTracksByGender(genre))) ;
     return allTracks.reduce((acc, val) => acc.concat(val), []);

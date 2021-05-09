@@ -1,6 +1,5 @@
 import { generateId } from '../utils/utils';
 import Album from "./album";
-import validate = WebAssembly.validate;
 import Track from "./track";
 
 export default class Artist {
