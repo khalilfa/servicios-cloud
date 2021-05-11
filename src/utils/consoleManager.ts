@@ -11,7 +11,8 @@ import Listen from '../model/listen';
 
 
 const COMMANDS: string[] = ['addArtist', 'addAlbum', 'addTrack', 'tracksByGenres', 'tracksByArtist', 'deleteArtist', 'deleteAlbum', 'deleteTrack',
-  'addPlaylist', 'search', 'deletePlaylist', 'viewArtist', 'viewAlbum', 'viewTrack', 'viewPlaylist', 'addUser', 'listen', 'listened'];
+  'addPlaylist', 'search', 'deletePlaylist', 'viewArtist', 'viewAlbum', 'viewTrack', 'viewPlaylist', 'addUser', 'listen', 'listened',
+  'howManyListen', 'thisIs'];
 const VALID_PARAMS: any = {
   addArtist: ['name', 'country'],
   addAlbum: ['artist', 'name', 'year'],
@@ -31,6 +32,8 @@ const VALID_PARAMS: any = {
   addUser: ['name'],
   listen: ['user', 'track'],
   listened: ['user'],
+  howManyListen: ['user', 'track'],
+  thisIs: ['artist'],
 }
 
 export default class ConsoleManager {
@@ -105,6 +108,23 @@ class Command {
     console.log('- Temas escuchados por el usuario: ', listened);
   }
 
+  howManyListen() {
+    let userId: string = this.properties.user;
+    let trackId: string = this.properties.track;
+
+    let count: number = this.unqfy.howManyListen(userId, trackId);
+
+    console.log(`- El usuario ${userId} escucho el tema ${count} veces`);
+  }
+
+  thisIs() {
+    let artistId: string = this.properties.artist;
+
+    let playlist: Playlist = this.unqfy.thisIs(artistId);
+
+    console.log(`- La lista "This is" del artista ${artistId} es: `, playlist);
+  }
+
   addUser(): void {
     let name: string = this.properties.name;
 
@@ -135,19 +155,21 @@ class Command {
   }
 
   addAlbum(): void {
-    let artistId: string = this.properties.artist;
+    let artistName: string = this.properties.artist;
 
     let year: number = parseInt(this.properties.year);
     let albumData: { name: string, year: number } = {...this.properties, year};
-
-    let album: Album = this.unqfy.addAlbum(artistId, albumData);
+    //SD
+    let artist = this.unqfy.getArtistByName(artistName);
+    //
+    let album: Album = this.unqfy.addAlbum(artist.id, albumData);
     console.log('- Se agrego un nuevo album: ', album);
   }
 
   deleteAlbum(): void {
     let albumId: string = this.properties.album;
     
-    this.unqfy.deleteAlbum([albumId]);
+    this.unqfy.deleteAlbum(albumId);
 
     console.log('- Se elimino el album con id: ', albumId);
   }
@@ -175,20 +197,23 @@ class Command {
   }
 
   addTrack() {
-    let albumId: string = this.properties.album;
+    let albumName: string = this.properties.album;
 
     let genres: string[] = this.properties.genres.split(',').map((genre: string) => genre.trim());
     let duration: number = parseInt(this.properties.duration);
     let trackData: { name: string; duration: number; genres: string[]; } = {...this.properties, genres, duration};
-
-    let track: Track = this.unqfy.addTrack(albumId, trackData);
-    console.log('- Se agrego un nuevo track: ', track);
+ 
+    let album = this.unqfy.getAlbumByName(albumName);
+ 
+    let track : Track = this.unqfy.addTrack(album.id, trackData);
+    console.log('- Se agrego un nuevo track: ',track);
+    //*
   }
 
   deleteTrack() {
     let trackId: string = this.properties.track;
 
-    this.unqfy.deleteTrack([trackId]);
+    this.unqfy.deleteTrack(trackId);
 
     console.log('- Se elimino el track con id: ', trackId);
   }
@@ -205,9 +230,7 @@ class Command {
     let name: string = this.properties.name;
     let duration: number = parseInt(this.properties.duration);
     let genres: string[] = this.properties.genres.split(',').map((genre: string) => genre.trim());
-
     let playlist: Playlist = this.unqfy.createPlaylist(name, genres, duration);
-
     console.log('- Se agrego una nueva playlist: ', playlist);
   }
 

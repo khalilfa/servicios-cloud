@@ -1,78 +1,126 @@
-<diagram program="umletino" version="14.3.0"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>270</x><y>98</y><w>260</w><h>190</h></coordinates><panel_attributes>Track
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>52</x><y>30</y><w>260</w><h>280</h></coordinates><panel_attributes>Track
 --
-- id: String
-- name: String
-- duration: Number
-- generos: [String]
-- album: Album
-- reproducciones: Number
-- artist: Artist
-
---
-Methods</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1090</x><y>108</y><w>260</w><h>190</h></coordinates><panel_attributes>Album
---
-- id: String
-- artist: Artist
-- name: String
-- year: Number
-
---
-Methods</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1090</x><y>578</y><w>260</w><h>190</h></coordinates><panel_attributes>Artist
---
-- id: String
-- name: String
-- country: String
-
---
-Methods</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>270</x><y>588</y><w>260</w><h>190</h></coordinates><panel_attributes>Playlist
---
-- tracks: [Track]
-
---
-Methods</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>520</x><y>188</y><w>590</w><h>40</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;
-m2=1</panel_attributes><additional_attributes>10;10;570;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1210</x><y>288</y><w>40</w><h>310</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;
-m2=1</panel_attributes><additional_attributes>10;10;10;290</additional_attributes></element><element><id>Relation</id><coordinates><x>390</x><y>278</y><w>50</w><h>330</h></coordinates><panel_attributes>lt=-
-m1=0..n</panel_attributes><additional_attributes>10;10;10;310</additional_attributes></element><element><id>UMLClass</id><coordinates><x>690</x><y>278</y><w>260</w><h>290</h></coordinates><panel_attributes>UNQfy
---
-- id: String
-- tracks: [Track]
-- albums: [Album]
-- playlists: [Playlist]
-- artists: [Artist]
-- users: [User]
-
---
-+ CRUD(User)
-+ CRUD(Artist)
-+ CRUD(Album)
-+ CRUD(Track)
-+ CRUD(Playlist)
-+ masEscuchados(): [Track]
-+ generarPlaylist(generos:[String]): Playlist
-+ tracksPorGenero(genero: String): [Track]
-+ search(nombre: String): [Any]
-+ getAllTracks(artist: String): [Track]
-
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>520</x><y>268</y><w>190</w><h>50</h></coordinates><panel_attributes>lt=&lt;-
-m1=n</panel_attributes><additional_attributes>10;20;170;10</additional_attributes></element><element><id>Relation</id><coordinates><x>940</x><y>268</y><w>170</w><h>60</h></coordinates><panel_attributes>lt=&lt;-
-m1=n</panel_attributes><additional_attributes>150;30;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>940</x><y>458</y><w>170</w><h>140</h></coordinates><panel_attributes>lt=&lt;-
-m1=n</panel_attributes><additional_attributes>150;120;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>520</x><y>558</y><w>190</w><h>60</h></coordinates><panel_attributes>lt=&lt;-
-m1=n</panel_attributes><additional_attributes>10;30;170;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>700</x><y>958</y><w>260</w><h>190</h></coordinates><panel_attributes>Escucha
---
-- id: String
-- track: Track
-- count: Number
+- id: string
+- name: string
+- duration: number
+- genres: string[]
 
 --
 Methods
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>700</x><y>688</y><w>260</w><h>190</h></coordinates><panel_attributes>User
+
++ get id(): string
++ set id(value: string) 
++ get name(): string 
++ set name(value: string)
++ get duration(): number 
++ set duration(value: number)
++ get genres(): string[]
++ set genres(value: string[]) </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>882</x><y>0</y><w>310</w><h>240</h></coordinates><panel_attributes>Album
 --
-- id: String
-- escuchas: [Escucha]
+- id: string;
+- name: string;
+- tracks: Track[]
+- year: number
 
 --
 Methods
-+ escuchar(Track) : void
-+ getEscuchados(): [E]</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>820</x><y>868</y><w>50</w><h>110</h></coordinates><panel_attributes>lt=&lt;-
-m1=0..n</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>160</x><y>168</y><w>560</w><h>860</h></coordinates><panel_attributes>m1=1</panel_attributes><additional_attributes>110;10;20;10;10;840;540;840</additional_attributes></element><element><id>Relation</id><coordinates><x>810</x><y>558</y><w>40</w><h>150</h></coordinates><panel_attributes>lt=&lt;-
-m1=n</panel_attributes><additional_attributes>10;130;10;10</additional_attributes></element></diagram>
+
+  +tracks(value: Track[]) 
+  +id(value: string) 
+  +name(value: string)
+  +year(value: number)
+  +deleteTrack(trackId: string)
+  +addTrack(track: Track)
++*search(any:string):object[]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>682</x><y>510</y><w>490</w><h>330</h></coordinates><panel_attributes>Artist
+--
+- id: string;
+- name: string;
+- country: string;
+- albums: Album[] 
+--
+Methods
++ get albums(): Album[] 
++  set albums(value: Album[])
++  get id(): string
++ set id(value: string)
++ get name(): string 
++ set name(value: string) 
++ get country(): string 
++ set country(value: string) 
++ deleteAlbum(albumId: string) 
++ deleteTrack(trackId: string) 
++ getAlgumById(id: string): Album 
++ addAlbum(album: Album) 
++ addTrack(albumId: string, trackData: { name: string; duration: number; genres: string[] }) 
++*search(any:string):object[]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>32</x><y>440</y><w>260</w><h>240</h></coordinates><panel_attributes>Playlist
+--
+- id: string
+- name: string
+- tracks: string[]
+- duration: number
+--
+Methods
+ + get id() : string
+ + get name() : string
+ + get tracks() : tracks: string[] ¿?
+ + get duration() : number
+ + set name(value: string) 
+ + addTrack(track: Track)
+ + deleteTrack(track: Track)
+ + hasTrack(track: Track): boolean</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>302</x><y>60</y><w>600</w><h>40</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;
+m2=n</panel_attributes><additional_attributes>580;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>172</x><y>300</y><w>40</w><h>160</h></coordinates><panel_attributes>lt=&lt;-
+m1=n</panel_attributes><additional_attributes>10;10;10;140</additional_attributes></element><element><id>UMLClass</id><coordinates><x>352</x><y>110</y><w>510</w><h>390</h></coordinates><panel_attributes>UNQfy
+--
+- artists: Artist[]
+- playlists: Playlist[]
+- users: User[]
+
+--
++ addUser(name: string): void
++ listen(userId: string, trackId: string) : void
++ listened(userId: string): string[] 
++ addArtist(artistData: {name: string, country: string}): Artist 
++ addAlbum(artistId: string, albumData: {name: string, year: number}) : void
++ addTrack(albumId: string, trackData: {name: string, duration: number, genres: string[]}) : void
++ deleteArtist(artistId: string): void 
++ deleteAlbum(albumId: string): void 
++ deleteTrack(trackIds: string): void
++ deletePlaylist(playlistId: string): void
++ getArtistById(id: string): Artist
++ getAlbumById(id: string) : void ¿?
++ getTrackById(id: string) : void ¿?
++ getPlaylistById(id: string) : void ¿?
++ getUserById(id: string) : void ¿?
++ getTracksMatchingGenres(genres: string[]): Track[] 
+- getArtistByName(artistName: string): Artist 
+- getAlbumsByArtist(artistId: string): Album[] 
++ createPlaylist(name: string, genresToInclude: string[], maxDuration: number): Playlist 
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1012</x><y>230</y><w>40</w><h>300</h></coordinates><panel_attributes>lt=&lt;-
+m1=n</panel_attributes><additional_attributes>10;10;10;280</additional_attributes></element><element><id>Relation</id><coordinates><x>282</x><y>430</y><w>90</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+m1=n</panel_attributes><additional_attributes>10;10;70;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>352</x><y>740</y><w>260</w><h>150</h></coordinates><panel_attributes>Listen
+--
+- id: string
+- track: string ?
+- count: number
+
+--
+Methods
+get id() : string
+get track() : string
+get count()  : number</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>352</x><y>520</y><w>260</w><h>190</h></coordinates><panel_attributes>User
+--
+- id: string
+- name: string
+- listened: Listen[]
+
+--
+Methods
+ + get id() : string
+ + get name() : string
+ + get listened() :  Listen[]
+ + listen(track: Track) :void
+ + listen.addListen() :void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>472</x><y>700</y><w>40</w><h>60</h></coordinates><panel_attributes>lt=&lt;-
+m1=.n</panel_attributes><additional_attributes>10;40;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>462</x><y>490</y><w>40</w><h>50</h></coordinates><panel_attributes>lt=&lt;-
+m1=n</panel_attributes><additional_attributes>10;30;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>850</x><y>380</y><w>110</w><h>150</h></coordinates><panel_attributes>lt=&lt;-
+m1=n</panel_attributes><additional_attributes>90;130;10;10</additional_attributes></element></diagram>

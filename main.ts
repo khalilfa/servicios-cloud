@@ -26,7 +26,7 @@ export function saveUNQfy(unqfy: any, filename = 'data.json') {
 
     - Listar todos los Artistas
     - Listar todos los albumes de un artista
-    - Listar todos los tracks de un album
+    - Listar todos los tracks de un albums
 
     - Busqueda de canciones intepretadas por un determinado artista
     - Busqueda de canciones por genero
