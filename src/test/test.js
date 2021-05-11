@@ -49,7 +49,7 @@ describe('Add, remove and filter data', () => {
     const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
     unqfy.deleteAlbum(album.id)
 
-    assert.isEmpty(unqfy.artists)
+    assert.isEmpty(unqfy.getArtistById(artist.id).albums)
   });
 
   it('should add an album to an artist', () => {

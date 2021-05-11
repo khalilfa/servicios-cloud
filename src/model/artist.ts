@@ -48,7 +48,7 @@ export default class Artist {
   }
 
   deleteAlbum(albumId: string) {
-    this.albums.filter(album => album.id != albumId);
+    this.albums = this.albums.filter(album => album.id != albumId);
   }
 
   deleteTrack(trackId: string) {
