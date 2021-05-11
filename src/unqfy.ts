@@ -215,18 +215,17 @@ export default class UNQfy {
 
   }
 
-
   createPlaylist(name: string, genre: string[], maxDuration: number): Playlist {
     let playlist: Playlist = new Playlist(name);
     let tracks : Track[] = this.getTracksMatchingGenres(genre);
-    
-    if (tracks.length === 0) throw new Error('debe existir al menos un track del genero: ' + genre);
-    
-    while(tracks.length > 0){
-      tracks = tracks.filter(track  => track.duration <= (maxDuration - playlist.duration) ) ;
-      playlist.addTrack(tracks.pop()!);
+
+    for(let i = 0; i < tracks.length; i++) {
+      if((playlist.duration + tracks[i].duration) <= maxDuration){
+        playlist.addTrack(tracks[i]);
+      }
     }
-     return playlist;
+    this.playlists = this.playlists.concat(playlist)
+    return playlist;
    }
 
 
