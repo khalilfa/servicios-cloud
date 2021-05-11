@@ -176,19 +176,27 @@ export default class UNQfy {
    return artist.getTracks();
   }
 
-  searchByName(name: string) : any[] {
-    let result: any[] = [];
-    this.artists.forEach(
-      artist => {
-        if (artist.name.includes(name)) { 
-          result.push(artist);
-        }
-        result.push(artist.search(name))
-      }); 
-      result.push(this.users.filter(user => user.name.includes(name)));
-      result.push(this.playlists.filter(playlist => playlist.name.includes(name)));
-      // array flatten
-      return result.reduce((acc, val) => acc.concat(val), []);
+  searchByName(name: string) : any {
+
+    let matchArtist : Artist[] = [] ;
+    let matchAlbums: Album[] = [];
+    let matchTracks : Track[] = [];
+    let matchPlaylist : Playlist[] = [];
+
+    matchArtist = this.artists.filter(artist => artist.name.includes(name));
+    this.artists.forEach(artist => matchAlbums = matchAlbums.concat(artist.albums.filter(album => album.name.includes(name))));
+    this.artists.forEach(artist => artist.albums.forEach(album => matchTracks = matchTracks.concat(album.tracks.filter(track => track.name.includes(name)) )));
+    matchPlaylist = this.playlists.filter(playlist => playlist.name.includes(name));
+    
+
+    let result = {
+      artists:matchArtist ,
+      albums: matchAlbums,
+      tracks: matchTracks,
+      playlists: matchPlaylist,
+	};
+  
+      return result ;
   }
 
   private getArtistByName(artistName: string): Artist {
@@ -208,19 +216,19 @@ export default class UNQfy {
   }
 
 
-  createPlaylist(name: string, genre: [string], maxDuration: number): Playlist {
+  createPlaylist(name: string, genre: string[], maxDuration: number): Playlist {
     let playlist: Playlist = new Playlist(name);
     let tracks : Track[] = this.getTracksMatchingGenres(genre);
-    let trackIndex : number = this.getRandomArbitrary(0,tracks.length)
-
-    for(let duration = 0; duration < maxDuration || tracks.length === 0; duration += tracks[trackIndex].duration) {
-      playlist.addTrack(tracks[trackIndex]);
-      tracks = tracks.splice(trackIndex,1);
-      trackIndex = this.getRandomArbitrary(0,tracks.length) ;
+    
+    if (tracks.length === 0) throw new Error('debe existir al menos un track del genero: ' + genre);
+    
+    while(tracks.length > 0){
+      tracks = tracks.filter(track  => track.duration <= (maxDuration - playlist.duration) ) ;
+      playlist.addTrack(tracks.pop()!);
     }
-
      return playlist;
    }
+
 
 
    private getRandomArbitrary(min : number, max : number) : number {
