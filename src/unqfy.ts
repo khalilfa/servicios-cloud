@@ -99,7 +99,7 @@ export default class UNQfy {
   }
 
   deleteArtist(artistId: string): void {
-    this.artists.filter(artist => artist.id != artistId);
+    this.artists = this.artists.filter(artist => artist.id != artistId);
   }
 
   deleteAlbum(albumId: string): void {
