@@ -199,13 +199,23 @@ export default class UNQfy {
       return result ;
   }
 
-  private getArtistByName(artistName: string): Artist {
+  getArtistByName(artistName: string): Artist {
     let artist: Artist | undefined = this.artists.find(artist => artist.name.toLowerCase() === artistName.toLowerCase());
 
     if(!artist) throw new EntityNotFoundError("Artist", artistName);
 
     return artist;
   }
+
+  getAlbumByName(albumName: string): Album {
+     let album: Album | undefined ;
+     this.artists.forEach(artist => album = artist.albums.find(album => album.name.toLowerCase() === albumName.toLowerCase() )   );
+
+    if(!album) throw new EntityNotFoundError("Album", albumName);
+
+    return album;
+  }
+
 
   private getAlbumsByArtist(artistId: string): Album[] {
     let artist: Artist | undefined = this.artists.find(value => value.id == artistId)
