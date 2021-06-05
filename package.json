@@ -5,8 +5,11 @@
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
   "dependencies": {
+    "axios": "^0.21.1",
     "chai": "^4.1.2",
+    "express": "^4.17.1",
     "picklify": "github:lwoites/picklify",
+    "request": "^2.88.2",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
