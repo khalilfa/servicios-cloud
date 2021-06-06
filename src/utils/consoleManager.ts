@@ -12,7 +12,7 @@ import Listen from '../model/listen';
 
 const COMMANDS: string[] = ['addArtist', 'addAlbum', 'addTrack', 'tracksByGenres', 'tracksByArtist', 'deleteArtist', 'deleteAlbum', 'deleteTrack',
   'addPlaylist', 'search', 'deletePlaylist', 'viewArtist', 'viewAlbum', 'viewTrack', 'viewPlaylist', 'addUser', 'listen', 'listened',
-  'howManyListen', 'thisIs'];
+  'howManyListen', 'thisIs', 'lyrics'];
 const VALID_PARAMS: any = {
   addArtist: ['name', 'country'],
   addAlbum: ['artist', 'name', 'year'],
@@ -34,6 +34,7 @@ const VALID_PARAMS: any = {
   listened: ['user'],
   howManyListen: ['user', 'track'],
   thisIs: ['artist'],
+  lyrics: ['track']
 }
 
 export default class ConsoleManager {
@@ -89,6 +90,14 @@ class Command {
 
   getCommand(): string {
     return this.command;
+  }
+
+  async lyrics() {
+    let track: string = this.properties.track;
+
+    let lyrics: string = await this.unqfy.getLyrics(track);
+
+    console.log(`Letra de ${track}: \n ${lyrics}`);
   }
 
   listen() {

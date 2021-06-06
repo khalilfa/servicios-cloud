@@ -6,7 +6,7 @@ import EntityNotFoundError from './exceptions/entityNotFountError';
 import Playlist from './model/playlist';
 import User from './model/user';
 import Listen from './model/listen';
-import { Console } from 'node:console';
+import { getLyrics } from './utils/musixMatch';
 
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 
@@ -27,6 +27,27 @@ export default class UNQfy {
     this.users.push(user);
 
     return user;
+  }
+
+  async getLyrics(trackName: string): Promise<string> {
+    let tracks = this.artists.reduce((tracks: Track[], artist: Artist) => {
+      let track = artist.getAllTracks().find(track => track.name.toLocaleLowerCase() === trackName.toLocaleLowerCase());
+      if(track) {
+        tracks = [...tracks, track];
+      }
+
+      return tracks;
+    }, []);
+
+    if(tracks.length === 0) throw new EntityNotFoundError("Track", trackName);
+
+    let track: Track = tracks[0];
+    
+    if(track.lyrics === '') {
+      track.lyrics = await getLyrics(trackName);
+    }
+
+    return track.lyrics;
   }
 
   listen(userId: string, trackId: string) {
