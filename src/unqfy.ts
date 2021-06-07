@@ -21,6 +21,10 @@ export default class UNQfy {
     this.users = [];
   }
 
+  getArtists(): Artist[] {
+    return this.artists;
+  }
+
   addUser(name: string) {
     let user: User = new User(name);
 
