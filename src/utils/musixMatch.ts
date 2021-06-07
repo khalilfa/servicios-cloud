@@ -1,6 +1,6 @@
 import Axios from 'axios';
+import config from '../config/api-keys.json';
 
-const config = require('../config/api-keys.json');
 const URI = 'http://api.musixmatch.com/ws/1.1';
 
 async function searchTrackByName(name: string) {

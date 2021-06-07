@@ -35,7 +35,8 @@
     "eslint": "eslint . --ext .ts",
     "start": "ts-node main.ts",
     "build": "tsc && node dist/main.js",
-    "server": "nodemon src/app.ts"
+    "dev": "nodemon src/app.ts",
+    "server": "tsc && node dist/src/app.js"
   },
   "author": "",
   "license": "ISC"

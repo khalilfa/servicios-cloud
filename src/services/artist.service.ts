@@ -1,21 +1,27 @@
 import Artist from "../model/artist";
 import UNQfy from "../unqfy";
 
-export function getAllArtists(unqfy: UNQfy): Artist[] {
-  return unqfy.getArtists();
+let UNQFY: UNQfy;
+
+export function setUnqfy(unqfy: UNQfy) {
+  UNQFY = unqfy;
 }
 
-export function getArtistById(unqfy: UNQfy, id: string): Artist {
-  return unqfy.getArtistById(id);
+export function getAllArtists(): Artist[] {
+  return UNQFY.getArtists();
 }
 
-export function createArtist(unqfy: UNQfy, name: string, country: string) {
-  let artist: Artist = unqfy.addArtist({name, country});
+export function getArtistById(id: string): Artist {
+  return UNQFY.getArtistById(id);
+}
+
+export function createArtist(name: string, country: string) {
+  let artist: Artist = UNQFY.addArtist({name, country});
   return artist;
 }
 
-export function updateArtist(unqfy: UNQfy, id: string, name: string, country: string) {
-  let artist: Artist = unqfy.getArtistById(id);
+export function updateArtist(id: string, name: string, country: string) {
+  let artist: Artist = UNQFY.getArtistById(id);
 
   artist.name = name;
   artist.country = country;
@@ -23,6 +29,6 @@ export function updateArtist(unqfy: UNQfy, id: string, name: string, country: st
   return artist;
 }
 
-export function deleteArtist(unqfy: UNQfy, id: string) {
-  unqfy.deleteArtist(id);
+export function deleteArtist(id: string) {
+  UNQFY.deleteArtist(id);
 }

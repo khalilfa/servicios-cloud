@@ -8,6 +8,8 @@ import { getUNQfy, saveUNQfy } from './database/connection';
 const PORT: number = 3000;
 const app = express();
 
+const Unqfy = getUNQfy();
+
 // App Configuration
 app.use(cors());
 app.use(express.json());
@@ -16,7 +18,6 @@ app.use(express.json());
 app.use(morgan('combined'));
 
 // -- Load Unqfy data
-const Unqfy = getUNQfy();
 app.locals.unqfy = Unqfy;
 
 // -- Routes
