@@ -27,17 +27,21 @@ export function createArtist(name: string, country: string) {
     return artist;
   } catch(err: Error | any) { 
     throw err;
-   }
+  }
   
 }
 
 export function updateArtist(id: string, name: string, country: string) {
-  let artist: Artist = UNQFY.getArtistById(id);
+  try{
+    let artist: Artist = UNQFY.getArtistById(id);
 
-  artist.name = name;
-  artist.country = country;
+    artist.name = name;
+    artist.country = country;
 
-  return artist;
+    return artist;
+  } catch(err: Error | any) { 
+    throw err;
+  }
 }
 
 export function deleteArtist(id: string) {

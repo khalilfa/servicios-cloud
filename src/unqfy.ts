@@ -128,6 +128,8 @@ export default class UNQfy {
   }
 
   deleteArtist(artistId: string): void {
+    if(!this.artists.some(artist => artist.id === artistId)) throw new EntityNotFoundError("Artist", artistId);
+
     this.artists = this.artists.filter(artist => artist.id != artistId);
   }
 
