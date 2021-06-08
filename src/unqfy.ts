@@ -146,7 +146,7 @@ export default class UNQfy {
   getArtistById(id: string): Artist {
     let artist: Artist | undefined = this.artists.find(value => value.id === id);
 
-    if(!artist) throw new EntityNotFoundError("Album", id);
+    if(!artist) throw new EntityNotFoundError("Artist", id);
 
     return artist;
   }
