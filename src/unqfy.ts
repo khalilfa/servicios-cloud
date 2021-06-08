@@ -273,9 +273,6 @@ export default class UNQfy {
     return playlist;
   }
 
-  private getRandomArbitrary(min: number, max: number): number {
-    return Math.random() * (max - min) + min;
-  }
 
   save(filename: string) {
     const serializedData = picklify.picklify(this);
