@@ -113,11 +113,11 @@ export default class UNQfy {
     return artist;
   }
 
-  addAlbum(artistId: string, albumData: {name: string, year: number}): Album {
+  addAlbum(artistId: string, albumData: {name: string, year: number}, albumId: string): Album {
     let album: Album  | undefined;
     this.artists.forEach(artist => {
       if(artist.id === artistId){
-        album = new Album(albumData.name, albumData.year)
+        album = new Album(albumData.name, albumData.year, albumId)
         artist.addAlbum(album)
       }
     })
@@ -294,7 +294,7 @@ export default class UNQfy {
 
     const artist = this.addArtist({name: artistName, country: "unkown"})
     let albums: Album[] = []
-    spotifyAlbums.forEach((value: { name: any; year: string; albumId: string | undefined; }) => albums.push(this.addAlbum(artist.id, {
+    spotifyAlbums.forEach((value: { name: any; year: string; albumId: string; }) => albums.push(this.addAlbum(artist.id, {
       name: value.name,
       year: parseInt(value.year.substring(0, 4))
     }, value.albumId)))
