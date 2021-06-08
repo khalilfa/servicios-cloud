@@ -12,7 +12,7 @@ import Listen from '../model/listen';
 
 const COMMANDS: string[] = ['addArtist', 'addAlbum', 'addTrack', 'tracksByGenres', 'tracksByArtist', 'deleteArtist', 'deleteAlbum', 'deleteTrack',
   'addPlaylist', 'search', 'deletePlaylist', 'viewArtist', 'viewAlbum', 'viewTrack', 'viewPlaylist', 'addUser', 'listen', 'listened',
-  'howManyListen', 'thisIs'];
+  'howManyListen', 'thisIs', 'populateAlbumsForArtist'];
 const VALID_PARAMS: any = {
   addArtist: ['name', 'country'],
   addAlbum: ['artist', 'name', 'year'],
@@ -34,6 +34,7 @@ const VALID_PARAMS: any = {
   listened: ['user'],
   howManyListen: ['user', 'track'],
   thisIs: ['artist'],
+  populateAlbumsForArtist: ['artistName']
 }
 
 export default class ConsoleManager {
@@ -89,6 +90,10 @@ class Command {
 
   getCommand(): string {
     return this.command;
+  }
+
+  populateAlbumsForArtist(){
+    this.unqfy.populateAlbumsForArtist(this.properties.artistName);
   }
 
   listen() {
@@ -185,7 +190,7 @@ class Command {
   tracksByGenres(): void {
     let genres: string[] = this.properties.genres.split(',').map((genre: string) => genre.trim());
     let tracks: Track[] = this.unqfy.getTracksMatchingGenres(genres);
-
+    console.log(genres)
     console.log('- Tracks by genres: ', tracks);
   }
 

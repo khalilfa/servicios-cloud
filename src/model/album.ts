@@ -9,8 +9,8 @@ export default class Album {
   private _tracks: Track[] = [];
   private _year: number;
 
-  constructor(name: string, year: number) {
-    this._id = generateId();
+  constructor(name: string, year: number, customId = "") {
+    this._id = (customId)? customId : generateId();
     this._name = name;
     this._year = year;
   }

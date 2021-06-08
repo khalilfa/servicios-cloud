@@ -6,7 +6,8 @@ import EntityNotFoundError from './exceptions/entityNotFountError';
 import Playlist from './model/playlist';
 import User from './model/user';
 import Listen from './model/listen';
-import { Console } from 'node:console';
+import SpotifyService from "./utils/spotify.service";
+
 
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 
@@ -50,17 +51,20 @@ export default class UNQfy {
 
     let listen: Listen | undefined = user.getListenByTrack(track);
 
-    if(!listen) return 0;
+    if (!listen) return 0;
 
     return listen.count;
   }
 
-  thisIs(artistId: string): Playlist{
+  thisIs(artistId: string): Playlist {
     let artist: Artist = this.getArtistById(artistId);
     let tracks: Track[] = artist.getAllTracks();
 
-    let tracksByCount: {track: Track, count: number}[] = tracks.map(track => ({ track, count: this.users.reduce((acc, usr) => acc + this.howManyListen(usr.id, track.id), 0) }) );
-    let top3: {track: Track, count: number}[] = tracksByCount.sort((a, b) => a.count - b.count).slice(0, 3);
+    let tracksByCount: { track: Track, count: number }[] = tracks.map(track => ({
+      track,
+      count: this.users.reduce((acc, usr) => acc + this.howManyListen(usr.id, track.id), 0)
+    }));
+    let top3: { track: Track, count: number }[] = tracksByCount.sort((a, b) => a.count - b.count).slice(0, 3);
 
     let playlist: Playlist = new Playlist(`This is ${artist.name}`);
     top3.forEach(elem => playlist.addTrack(elem.track));
@@ -68,19 +72,19 @@ export default class UNQfy {
     return playlist;
   }
 
-  addArtist(artistData: {name: string, country: string}): Artist {
-    let { name, country } = artistData;
+  addArtist(artistData: { name: string, country: string }): Artist {
+    let {name, country} = artistData;
     let artist: Artist = new Artist(name, country);
 
     this.artists.push(artist);
     return artist;
   }
 
-  addAlbum(artistId: string, albumData: {name: string, year: number}): Album {
-    let album: Album  | undefined;
+  addAlbum(artistId: string, albumData: { name: string, year: number }, customId = ""): Album {
+    let album: Album | undefined;
     this.artists.forEach(artist => {
-      if(artist.id === artistId){
-        album = new Album(albumData.name, albumData.year)
+      if (artist.id === artistId) {
+        album = new Album(albumData.name, albumData.year, customId)
         artist.addAlbum(album)
       }
     })
@@ -88,11 +92,11 @@ export default class UNQfy {
     return album
   }
 
-  addTrack(albumId: string, trackData: {name: string, duration: number, genres: string[]}) {
-    let track: Track  | undefined;
+  addTrack(albumId: string, trackData: { name: string, duration: number, genres: string[] }) {
+    let track: Track | undefined;
     for (let i = 0; i < this.artists.length; i++) {
       track = this.artists[i].addTrack(albumId, trackData)
-      if(track) break
+      if (track) break
     }
     if (!track) throw new EntityNotFoundError("Album", albumId);
     return track
@@ -117,7 +121,7 @@ export default class UNQfy {
   getArtistById(id: string): Artist {
     let artist: Artist | undefined = this.artists.find(value => value.id === id);
 
-    if(!artist) throw new EntityNotFoundError("Album", id);
+    if (!artist) throw new EntityNotFoundError("Album", id);
 
     return artist;
   }
@@ -129,7 +133,7 @@ export default class UNQfy {
       if (album) break
     }
 
-    if(!album) throw new EntityNotFoundError("Album", id);
+    if (!album) throw new EntityNotFoundError("Album", id);
 
     return album;
   }
@@ -138,10 +142,10 @@ export default class UNQfy {
     let track: Track | undefined;
     for (let i = 0; i < this.artists.length; i++) {
       track = this.artists[i].getTrackById(id)
-      if(track) break
+      if (track) break
     }
 
-    if(!track) throw new EntityNotFoundError("Track", id);
+    if (!track) throw new EntityNotFoundError("Track", id);
 
     return track
   }
@@ -149,7 +153,7 @@ export default class UNQfy {
   getPlaylistById(id: string) {
     let playlist: Playlist | undefined = this.playlists.find(value => value.id === id);
 
-    if(!playlist) throw new EntityNotFoundError("Playlist", id);
+    if (!playlist) throw new EntityNotFoundError("Playlist", id);
 
     return playlist;
   }
@@ -157,61 +161,61 @@ export default class UNQfy {
   getUserById(id: string) {
     let user: User | undefined = this.users.find(value => value.id === id);
 
-    if(!user) throw new EntityNotFoundError("User", id);
+    if (!user) throw new EntityNotFoundError("User", id);
 
     return user;
   }
 
   getTracksMatchingGenres(genres: string[]): Track[] {
-   let tracks : Track[] = [];
-   this.artists.forEach(value => tracks = tracks.concat(value.getTracksMatchingGenres(genres)))
-   return tracks
+    let tracks: Track[] = [];
+    this.artists.forEach(value => tracks = tracks.concat(value.getTracksMatchingGenres(genres)))
+    return tracks
   }
 
-  getTracksMatchingArtist(artistData: {name: string}): Track[] {
-   let artist: Artist | undefined = this.artists.find(artist => artist.name === artistData.name);
-     if(!artist){
-       throw new EntityNotFoundError("Artist", artistData.name);
-     }
-   return artist.getTracks();
+  getTracksMatchingArtist(artistData: { name: string }): Track[] {
+    let artist: Artist | undefined = this.artists.find(artist => artist.name === artistData.name);
+    if (!artist) {
+      throw new EntityNotFoundError("Artist", artistData.name);
+    }
+    return artist.getTracks();
   }
 
-  searchByName(name: string) : any {
+  searchByName(name: string): any {
 
-    let matchArtist : Artist[] = [] ;
+    let matchArtist: Artist[] = [];
     let matchAlbums: Album[] = [];
-    let matchTracks : Track[] = [];
-    let matchPlaylist : Playlist[] = [];
+    let matchTracks: Track[] = [];
+    let matchPlaylist: Playlist[] = [];
 
     matchArtist = this.artists.filter(artist => artist.name.includes(name));
     this.artists.forEach(artist => matchAlbums = matchAlbums.concat(artist.albums.filter(album => album.name.includes(name))));
-    this.artists.forEach(artist => artist.albums.forEach(album => matchTracks = matchTracks.concat(album.tracks.filter(track => track.name.includes(name)) )));
+    this.artists.forEach(artist => artist.albums.forEach(album => matchTracks = matchTracks.concat(album.tracks.filter(track => track.name.includes(name)))));
     matchPlaylist = this.playlists.filter(playlist => playlist.name.includes(name));
-    
+
 
     let result = {
-      artists:matchArtist ,
+      artists: matchArtist,
       albums: matchAlbums,
       tracks: matchTracks,
       playlists: matchPlaylist,
-	};
-  
-      return result ;
+    };
+
+    return result;
   }
 
   getArtistByName(artistName: string): Artist {
     let artist: Artist | undefined = this.artists.find(artist => artist.name.toLowerCase() === artistName.toLowerCase());
 
-    if(!artist) throw new EntityNotFoundError("Artist", artistName);
+    if (!artist) throw new EntityNotFoundError("Artist", artistName);
 
     return artist;
   }
 
   getAlbumByName(albumName: string): Album {
-     let album: Album | undefined ;
-     this.artists.forEach(artist => album = artist.albums.find(album => album.name.toLowerCase() === albumName.toLowerCase() )   );
+    let album: Album | undefined;
+    this.artists.forEach(artist => album = artist.albums.find(album => album.name.toLowerCase() === albumName.toLowerCase()));
 
-    if(!album) throw new EntityNotFoundError("Album", albumName);
+    if (!album) throw new EntityNotFoundError("Album", albumName);
 
     return album;
   }
@@ -219,7 +223,7 @@ export default class UNQfy {
 
   private getAlbumsByArtist(artistId: string): Album[] {
     let artist: Artist | undefined = this.artists.find(value => value.id == artistId)
-    if(!artist) throw new EntityNotFoundError("Artist", artistId);
+    if (!artist) throw new EntityNotFoundError("Artist", artistId);
 
     return artist.albums
 
@@ -227,20 +231,18 @@ export default class UNQfy {
 
   createPlaylist(name: string, genre: string[], maxDuration: number): Playlist {
     let playlist: Playlist = new Playlist(name);
-    let tracks : Track[] = this.getTracksMatchingGenres(genre);
+    let tracks: Track[] = this.getTracksMatchingGenres(genre);
 
-    for(let i = 0; i < tracks.length; i++) {
-      if((playlist.duration + tracks[i].duration) <= maxDuration){
+    for (let i = 0; i < tracks.length; i++) {
+      if ((playlist.duration + tracks[i].duration) <= maxDuration) {
         playlist.addTrack(tracks[i]);
       }
     }
     this.playlists = this.playlists.concat(playlist)
     return playlist;
-   }
+  }
 
-
-
-   private getRandomArbitrary(min : number, max : number) : number {
+  private getRandomArbitrary(min: number, max: number): number {
     return Math.random() * (max - min) + min;
   }
 
@@ -254,6 +256,26 @@ export default class UNQfy {
     const classes = [UNQfy, Artist, Album, Track, Playlist, User, Listen];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
+
+  async populateAlbumsForArtist(artistName: string) {
+    const spotifyArtist = await SpotifyService.getArstistId(artistName)
+    const spotifyAlbums = await SpotifyService.getArtistAlbums(spotifyArtist.id)
+    const spotifyTracks = await SpotifyService.getTracksFromAlbums(spotifyAlbums)
+
+    const artist = this.addArtist({name: artistName, country: "unkown"})
+    let albums: Album[] = []
+    spotifyAlbums.forEach((value: { name: any; year: string; albumId: string | undefined; }) => albums.push(this.addAlbum(artist.id, {
+      name: value.name,
+      year: parseInt(value.year.substring(0, 4))
+    }, value.albumId)))
+    spotifyTracks.forEach((value: { albumId: any; tracks: any[]; }) => this.addTracksToAlbum(value.albumId, value.tracks, spotifyArtist.genres))
+    console.log(this.getTracksMatchingGenres(["rock"]))
+  }
+
+  private addTracksToAlbum(albumId: any, tracks: any[], genres: any[]) {
+    tracks.forEach(value => this.addTrack(albumId, {name: value.name, duration: value.duration, genres: genres}))
+  }
+
 }
 
 module.exports = UNQfy;
