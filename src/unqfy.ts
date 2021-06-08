@@ -7,6 +7,7 @@ import Playlist from './model/playlist';
 import User from './model/user';
 import Listen from './model/listen';
 import { getLyrics } from './utils/musixMatch';
+import EntityAlreadyExist from './exceptions/entityAlreadyExist';
 
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 
@@ -19,6 +20,10 @@ export default class UNQfy {
     this.artists = [];
     this.playlists = [];
     this.users = [];
+  }
+
+  getArtists(): Artist[] {
+    return this.artists;
   }
 
   addUser(name: string) {
@@ -91,6 +96,9 @@ export default class UNQfy {
 
   addArtist(artistData: {name: string, country: string}): Artist {
     let { name, country } = artistData;
+
+    if(this.artists.some(artist => artist.name.toLowerCase() === name.toLowerCase())) throw new EntityAlreadyExist('Artist', name);
+
     let artist: Artist = new Artist(name, country);
 
     this.artists.push(artist);
@@ -120,6 +128,8 @@ export default class UNQfy {
   }
 
   deleteArtist(artistId: string): void {
+    if(!this.artists.some(artist => artist.id === artistId)) throw new EntityNotFoundError("Artist", artistId);
+
     this.artists = this.artists.filter(artist => artist.id != artistId);
   }
 
@@ -138,7 +148,7 @@ export default class UNQfy {
   getArtistById(id: string): Artist {
     let artist: Artist | undefined = this.artists.find(value => value.id === id);
 
-    if(!artist) throw new EntityNotFoundError("Album", id);
+    if(!artist) throw new EntityNotFoundError("Artist", id);
 
     return artist;
   }
@@ -237,15 +247,6 @@ export default class UNQfy {
     return album;
   }
 
-
-  private getAlbumsByArtist(artistId: string): Album[] {
-    let artist: Artist | undefined = this.artists.find(value => value.id == artistId)
-    if(!artist) throw new EntityNotFoundError("Artist", artistId);
-
-    return artist.albums
-
-  }
-
   createPlaylist(name: string, genre: string[], maxDuration: number): Playlist {
     let playlist: Playlist = new Playlist(name);
     let tracks : Track[] = this.getTracksMatchingGenres(genre);
@@ -258,12 +259,6 @@ export default class UNQfy {
     this.playlists = this.playlists.concat(playlist)
     return playlist;
    }
-
-
-
-   private getRandomArbitrary(min : number, max : number) : number {
-    return Math.random() * (max - min) + min;
-  }
 
   save(filename: string) {
     const serializedData = picklify.picklify(this);
