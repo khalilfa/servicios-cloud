@@ -7,7 +7,6 @@ import EntityAlreadyExist from "./exceptions/entityAlreadyExist";
 import EntityNotFoundError from "./exceptions/entityNotFountError";
 import BadParamError from "./exceptions/badParamError";
 import { albumRouter } from "./routes/album.route";
-import { nextTick } from "node:process";
 
 // App Variables
 const PORT: number = 3000;

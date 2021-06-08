@@ -1,5 +1,5 @@
 import axios from "axios";
-const spotifyCreds = require('./config/spotifyCreds.json');
+const spotifyCreds = require('../config/spotifyCreds.json');
 
 export default class SpotifyService {
     static async getArstistId(artistName: string) {

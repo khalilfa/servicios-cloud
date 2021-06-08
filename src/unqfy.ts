@@ -113,7 +113,7 @@ export default class UNQfy {
     return artist;
   }
 
-  addAlbum(artistId: string, albumData: {name: string, year: number}, albumId: string): Album {
+  addAlbum(artistId: string, albumData: {name: string, year: number}, albumId: string = ''): Album {
     let album: Album  | undefined;
     this.artists.forEach(artist => {
       if(artist.id === artistId){
