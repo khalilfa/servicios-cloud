@@ -7,6 +7,7 @@ import Playlist from './model/playlist';
 import User from './model/user';
 import Listen from './model/listen';
 import { getLyrics } from './utils/musixMatch';
+import EntityAlreadyExist from './exceptions/entityAlreadyExist';
 
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 
@@ -95,6 +96,9 @@ export default class UNQfy {
 
   addArtist(artistData: {name: string, country: string}): Artist {
     let { name, country } = artistData;
+
+    if(this.artists.some(artist => artist.name.toLowerCase() === name.toLowerCase())) throw new EntityAlreadyExist('Artist', name);
+
     let artist: Artist = new Artist(name, country);
 
     this.artists.push(artist);
@@ -241,15 +245,6 @@ export default class UNQfy {
     return album;
   }
 
-
-  private getAlbumsByArtist(artistId: string): Album[] {
-    let artist: Artist | undefined = this.artists.find(value => value.id == artistId)
-    if(!artist) throw new EntityNotFoundError("Artist", artistId);
-
-    return artist.albums
-
-  }
-
   createPlaylist(name: string, genre: string[], maxDuration: number): Playlist {
     let playlist: Playlist = new Playlist(name);
     let tracks : Track[] = this.getTracksMatchingGenres(genre);
@@ -262,12 +257,6 @@ export default class UNQfy {
     this.playlists = this.playlists.concat(playlist)
     return playlist;
    }
-
-
-
-   private getRandomArbitrary(min : number, max : number) : number {
-    return Math.random() * (max - min) + min;
-  }
 
   save(filename: string) {
     const serializedData = picklify.picklify(this);

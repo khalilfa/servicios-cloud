@@ -1,3 +1,6 @@
+import e from "express";
+import { EEXIST } from "node:constants";
+import EntityAlreadyExist from "../exceptions/entityAlreadyExist";
 import Artist from "../model/artist";
 import UNQfy from "../unqfy";
 
@@ -7,8 +10,11 @@ export function setUnqfy(unqfy: UNQfy) {
   UNQFY = unqfy;
 }
 
-export function getAllArtists(): Artist[] {
-  return UNQFY.getArtists();
+export function searchArtists(name: string): Artist[] {
+  let allArtists: Artist[] = UNQFY.getArtists();
+  let filteredArtists: Artist[] = name ? allArtists.filter(artist => artist.name.toLowerCase().includes(name.toLowerCase())) : allArtists;
+
+  return filteredArtists;
 }
 
 export function getArtistById(id: string): Artist {
@@ -16,8 +22,13 @@ export function getArtistById(id: string): Artist {
 }
 
 export function createArtist(name: string, country: string) {
-  let artist: Artist = UNQFY.addArtist({name, country});
-  return artist;
+  try{
+    let artist: Artist = UNQFY.addArtist({name, country});
+    return artist;
+  } catch(err: Error | any) { 
+    throw err;
+   }
+  
 }
 
 export function updateArtist(id: string, name: string, country: string) {

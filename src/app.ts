@@ -25,6 +25,7 @@ app.use('/api', artistRouter);
 
 // -- Save Unqfy data
 app.use(function (req, res, next) {
+  console.log('Se guarda la wea');
   saveUNQfy(app.locals.unqfy);
   next();
 });
