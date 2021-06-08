@@ -26,6 +26,12 @@ export default class UNQfy {
     return this.artists;
   }
 
+  getAlbums(): Album[] {
+    let albums: Album[] = this.artists.map(artist => artist.albums).flat();
+
+    return albums;
+  }
+
   addUser(name: string) {
     let user: User = new User(name);
 
@@ -109,6 +115,8 @@ export default class UNQfy {
     let album: Album  | undefined;
     this.artists.forEach(artist => {
       if(artist.id === artistId){
+        if(artist.hasAlbum(albumData.name)) throw new EntityAlreadyExist('Album', albumData.name);
+
         album = new Album(albumData.name, albumData.year)
         artist.addAlbum(album)
       }
@@ -134,6 +142,8 @@ export default class UNQfy {
   }
 
   deleteAlbum(albumId: string): void {
+    if(!this.artists.some(artist => artist.getAlbumById(albumId) !== undefined)) throw new EntityNotFoundError("Album", albumId);
+
     this.artists.forEach(artist => artist.deleteAlbum(albumId))
   }
 
@@ -154,13 +164,17 @@ export default class UNQfy {
   }
 
   getAlbumById(id: string): Album {
-    let album: Album | undefined;
-    for (let i = 0; i < this.artists.length; i++) {
-      this.artists[i].getAlbumById(id)
-      if (album) break
-    }
+    let album: Album | undefined = this.artists.reduce((albums: Album[], artist: Artist) => {
+      let album: Album | undefined = artist.getAlbumById(id);
+      if(album) albums = [...albums, album];
 
-    if(!album) throw new EntityNotFoundError("Album", id);
+      return albums;
+    }, [])[0];
+
+    if(!album){
+      console.log('ERROR ');
+      throw new EntityNotFoundError("Album", id);
+    }
 
     return album;
   }

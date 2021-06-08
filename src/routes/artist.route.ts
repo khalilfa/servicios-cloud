@@ -5,17 +5,17 @@ import { searchArtists, getArtistById, createArtist, updateArtist, deleteArtist,
 
 export const artistRouter = express.Router();
 
-artistRouter.use(async (req, res, next) => {
+artistRouter.use(async (req: Request, res: Response, next: Function) => {
   let { unqfy } = req.app.locals;
   setUnqfy(unqfy);
 
   next();
-})
+});
 
 // Search artists
 artistRouter.get("/artists", async (req: Request, res: Response, next: Function) => {
   try {
-    let name = <string> req.query.name;
+    let name: string | undefined = req.query.name as string;
 
     let artists: Artist[] = searchArtists(name);
     res.status(200).json(artists);
@@ -32,6 +32,8 @@ artistRouter.get("/artists/:id", async (req: Request, res: Response, next: Funct
     let artist: Artist = getArtistById(id);
 
     res.status(200).json(artist);
+    
+    next();
   } catch(err) { next(err) };
 });
 
@@ -46,6 +48,7 @@ artistRouter.post("/artists", async (req: Request, res: Response, next: Function
     
     res.status(201).json(artist);
 
+    next();
   } catch(err) { next(err) };
   
 });
@@ -61,6 +64,8 @@ artistRouter.patch("/artists/:id", async (req: Request, res: Response, next: Fun
     let artist: Artist = updateArtist(id, name, country);
 
     res.status(200).json(artist);
+
+    next();
   } catch(err) { next(err) };
 });
 
@@ -72,5 +77,7 @@ artistRouter.delete("/artists/:id", async (req: Request, res: Response, next: Fu
     deleteArtist(id);
 
     res.status(204).send('El artista se elimino con exito');
+
+    next();
   } catch(err) { next(err) };
 });

@@ -1,6 +1,3 @@
-import e from "express";
-import { EEXIST } from "node:constants";
-import EntityAlreadyExist from "../exceptions/entityAlreadyExist";
 import Artist from "../model/artist";
 import UNQfy from "../unqfy";
 
@@ -10,11 +7,15 @@ export function setUnqfy(unqfy: UNQfy) {
   UNQFY = unqfy;
 }
 
-export function searchArtists(name: string): Artist[] {
-  let allArtists: Artist[] = UNQFY.getArtists();
-  let filteredArtists: Artist[] = name ? allArtists.filter(artist => artist.name.toLowerCase().includes(name.toLowerCase())) : allArtists;
+export function searchArtists(name: string | undefined): Artist[] {
+  try{
+    let allArtists: Artist[] = UNQFY.getArtists();
+    let filteredArtists: Artist[] = name ? allArtists.filter(artist => artist.name.toLowerCase().includes(name.toLowerCase())) : allArtists;
 
-  return filteredArtists;
+    return filteredArtists;
+  } catch(err: Error | any) {
+    throw err;
+  }
 }
 
 export function getArtistById(id: string): Artist {
@@ -45,5 +46,9 @@ export function updateArtist(id: string, name: string, country: string) {
 }
 
 export function deleteArtist(id: string) {
-  UNQFY.deleteArtist(id);
+  try {
+    UNQFY.deleteArtist(id);
+  } catch(err: Error | any) { 
+    throw err;
+  }
 }

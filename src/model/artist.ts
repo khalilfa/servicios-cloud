@@ -63,6 +63,10 @@ export default class Artist {
     this._albums.push(album)
   }
 
+  hasAlbum(name: string) {
+    return this._albums.some(album => album.name.toLowerCase() === name.toLowerCase());
+  }
+
   addTrack(albumId: string, trackData: { name: string; duration: number; genres: string[] }): Track | undefined {
     let track: Track  | undefined;
     this.albums.forEach(album => {
