@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import BadParamError from "../exceptions/badParamError";
 import Artist from "../model/artist";
 import { searchArtists, getArtistById, createArtist, updateArtist, deleteArtist, setUnqfy } from '../services/artist.service';
 
@@ -39,6 +40,8 @@ artistRouter.post("/artists", async (req: Request, res: Response, next: Function
   try {
     let { name, country } = req.body;
 
+    if(!name || !country) throw new BadParamError(['name', 'country']);
+
     let artist: Artist = createArtist(name, country);
     
     res.status(201).json(artist);
@@ -52,6 +55,8 @@ artistRouter.patch("/artists/:id", async (req: Request, res: Response, next: Fun
   try {
     let { id } = req.params;
     let { name, country } = req.body;
+
+    if(!name || !country) throw new BadParamError(['name', 'country']);
 
     let artist: Artist = updateArtist(id, name, country);
 

@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import { getUNQfy, saveUNQfy } from './database/connection';
 import EntityAlreadyExist from "./exceptions/entityAlreadyExist";
 import EntityNotFoundError from "./exceptions/entityNotFountError";
+import BadParamError from "./exceptions/badParamError";
 
 // App Variables
 const PORT: number = 3000;
@@ -34,6 +35,8 @@ app.use((err: Error, req: Request, res: Response, next: Function) => {
     res.status(409).json({ status: 409, errorCode: "RESOURCE_ALREADY_EXISTS" });
   } else if(err instanceof EntityNotFoundError) {
     res.status(404).json({ status: 404, errorCode: "RESOURCE_NOT_FOUND" });
+  } else if(err instanceof BadParamError) {
+    res.status(400).json({ status: 400, errorCode: "BAD_REQUEST" });
   } else {
     res.status(500).json({ status: 500, errorCode: "INTERNAL_SERVER_ERROR" });
   }
