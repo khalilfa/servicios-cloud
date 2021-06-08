@@ -8,6 +8,8 @@ import User from './model/user';
 import Listen from './model/listen';
 import SpotifyService from "./utils/spotify.service";
 
+import { getLyrics } from './utils/musixMatch';
+import EntityAlreadyExist from './exceptions/entityAlreadyExist';
 
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 
@@ -22,12 +24,37 @@ export default class UNQfy {
     this.users = [];
   }
 
+  getArtists(): Artist[] {
+    return this.artists;
+  }
+
   addUser(name: string) {
     let user: User = new User(name);
 
     this.users.push(user);
 
     return user;
+  }
+
+  async getLyrics(trackName: string): Promise<string> {
+    let tracks = this.artists.reduce((tracks: Track[], artist: Artist) => {
+      let track = artist.getAllTracks().find(track => track.name.toLocaleLowerCase() === trackName.toLocaleLowerCase());
+      if(track) {
+        tracks = [...tracks, track];
+      }
+
+      return tracks;
+    }, []);
+
+    if(tracks.length === 0) throw new EntityNotFoundError("Track", trackName);
+
+    let track: Track = tracks[0];
+
+    if(track.lyrics === '') {
+      track.lyrics = await getLyrics(trackName);
+    }
+
+    return track.lyrics;
   }
 
   listen(userId: string, trackId: string) {
@@ -74,6 +101,8 @@ export default class UNQfy {
 
   addArtist(artistData: { name: string, country: string }): Artist {
     let {name, country} = artistData;
+
+    if(this.artists.some(artist => artist.name.toLowerCase() === name.toLowerCase())) throw new EntityAlreadyExist('Artist', name);
     let artist: Artist = new Artist(name, country);
 
     this.artists.push(artist);
@@ -103,6 +132,8 @@ export default class UNQfy {
   }
 
   deleteArtist(artistId: string): void {
+    if(!this.artists.some(artist => artist.id === artistId)) throw new EntityNotFoundError("Artist", artistId);
+
     this.artists = this.artists.filter(artist => artist.id != artistId);
   }
 
@@ -121,7 +152,7 @@ export default class UNQfy {
   getArtistById(id: string): Artist {
     let artist: Artist | undefined = this.artists.find(value => value.id === id);
 
-    if (!artist) throw new EntityNotFoundError("Album", id);
+    if(!artist) throw new EntityNotFoundError("Artist", id);
 
     return artist;
   }

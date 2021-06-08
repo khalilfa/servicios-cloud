@@ -5,12 +5,14 @@ export default class Track {
   private _name: string;
   private _duration: number;
   private _genres: string[];
+  private _lyrics: string;
 
   constructor(name: string, duration: number, genres: string[]) {
     this._id = generateId();
     this._name = name;
     this._duration = duration;
     this._genres = genres;
+    this._lyrics = '';
   }
 
   get id(): string {
@@ -19,6 +21,14 @@ export default class Track {
 
   set id(value: string) {
     this._id = value;
+  }
+
+  get lyrics(): string {
+    return this._lyrics;
+  }
+  
+  set lyrics(value: string) {
+    this._lyrics = value;
   }
 
   get name(): string {

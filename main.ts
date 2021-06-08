@@ -4,6 +4,7 @@ import ConsoleManager from './src/utils/consoleManager';
 
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
 export function getUNQfy(filename = 'data.json') {
+  console.log('Se cargo la bd');
   let unqfy = new UNQfy();
   if (fs.existsSync(filename)) {
     unqfy = UNQfy.load(filename);

@@ -12,7 +12,8 @@ import Listen from '../model/listen';
 
 const COMMANDS: string[] = ['addArtist', 'addAlbum', 'addTrack', 'tracksByGenres', 'tracksByArtist', 'deleteArtist', 'deleteAlbum', 'deleteTrack',
   'addPlaylist', 'search', 'deletePlaylist', 'viewArtist', 'viewAlbum', 'viewTrack', 'viewPlaylist', 'addUser', 'listen', 'listened',
-  'howManyListen', 'thisIs', 'populateAlbumsForArtist'];
+  'howManyListen', 'thisIs', 'populateAlbumsForArtist',
+  'howManyListen', 'thisIs', 'lyrics'];
 const VALID_PARAMS: any = {
   addArtist: ['name', 'country'],
   addAlbum: ['artist', 'name', 'year'],
@@ -34,7 +35,8 @@ const VALID_PARAMS: any = {
   listened: ['user'],
   howManyListen: ['user', 'track'],
   thisIs: ['artist'],
-  populateAlbumsForArtist: ['artistName']
+  populateAlbumsForArtist: ['artistName'],
+  lyrics: ['track']
 }
 
 export default class ConsoleManager {
@@ -90,6 +92,14 @@ class Command {
 
   getCommand(): string {
     return this.command;
+  }
+
+  async lyrics() {
+    let track: string = this.properties.track;
+
+    let lyrics: string = await this.unqfy.getLyrics(track);
+
+    console.log(`Letra de ${track}: \n ${lyrics}`);
   }
 
   populateAlbumsForArtist(){
@@ -190,7 +200,7 @@ class Command {
   tracksByGenres(): void {
     let genres: string[] = this.properties.genres.split(',').map((genre: string) => genre.trim());
     let tracks: Track[] = this.unqfy.getTracksMatchingGenres(genres);
-    console.log(genres)
+
     console.log('- Tracks by genres: ', tracks);
   }
 
