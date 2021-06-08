@@ -8,50 +8,30 @@ export function setUnqfy(unqfy: UNQfy) {
 }
 
 export function createAlbum(artistId: string, name: string, year: number): Album {
-  try {
-    let album: Album = UNQFY.addAlbum(artistId, { name, year });
-    return album;
-  } catch(err: Error | any) {
-    throw err;
-  }
+  let album: Album = UNQFY.addAlbum(artistId, { name, year });
+  return album;
 }
 
 export function getAlbumById(id: string): Album {
-  try {
-    let album: Album = UNQFY.getAlbumById(id);
-    return album;
-  } catch(err: Error | any) {
-    throw err;
-  }
+  let album: Album = UNQFY.getAlbumById(id);
+  return album;
 }
 
 export function updateAlbum(id: string, year: number): Album {
-  try {
-    let album: Album = UNQFY.getAlbumById(id);
+  let album: Album = UNQFY.getAlbumById(id);
 
-    album.year = year;
+  album.year = year;
 
-    return album;
-  } catch(err: Error | any) {
-    throw err;
-  }
+  return album;
 }
 
 export function deleteAlbum(id: string): void {
-  try {
-    UNQFY.deleteAlbum(id);
-  } catch(err: Error | any) {
-    throw err;
-  }
+  UNQFY.deleteAlbum(id);
 }
 
 export function searchAlbums(name: string | undefined): Album[] {
-  try{
-    let allAlbums: Album[] = UNQFY.getAlbums();
-    let filteredAlbums: Album[] = name ? allAlbums.filter(album => album.name.toLowerCase().includes(name.toLowerCase())) : allAlbums;
+  let allAlbums: Album[] = UNQFY.getAlbums();
+  let filteredAlbums: Album[] = name ? allAlbums.filter(album => album.name.toLowerCase().includes(name.toLowerCase())) : allAlbums;
 
-    return filteredAlbums;
-  } catch(err: Error | any) {
-    throw err;
-  }
+  return filteredAlbums;
 }

@@ -8,14 +8,10 @@ export function setUnqfy(unqfy: UNQfy) {
 }
 
 export function searchArtists(name: string | undefined): Artist[] {
-  try{
-    let allArtists: Artist[] = UNQFY.getArtists();
-    let filteredArtists: Artist[] = name ? allArtists.filter(artist => artist.name.toLowerCase().includes(name.toLowerCase())) : allArtists;
+  let allArtists: Artist[] = UNQFY.getArtists();
+  let filteredArtists: Artist[] = name ? allArtists.filter(artist => artist.name.toLowerCase().includes(name.toLowerCase())) : allArtists;
 
-    return filteredArtists;
-  } catch(err: Error | any) {
-    throw err;
-  }
+  return filteredArtists;
 }
 
 export function getArtistById(id: string): Artist {
@@ -23,32 +19,19 @@ export function getArtistById(id: string): Artist {
 }
 
 export function createArtist(name: string, country: string) {
-  try{
-    let artist: Artist = UNQFY.addArtist({name, country});
-    return artist;
-  } catch(err: Error | any) { 
-    throw err;
-  }
-  
+  let artist: Artist = UNQFY.addArtist({name, country});
+  return artist;
 }
 
 export function updateArtist(id: string, name: string, country: string) {
-  try{
-    let artist: Artist = UNQFY.getArtistById(id);
+  let artist: Artist = UNQFY.getArtistById(id);
 
-    artist.name = name;
-    artist.country = country;
+  artist.name = name;
+  artist.country = country;
 
-    return artist;
-  } catch(err: Error | any) { 
-    throw err;
-  }
+  return artist;
 }
 
 export function deleteArtist(id: string) {
-  try {
-    UNQFY.deleteArtist(id);
-  } catch(err: Error | any) { 
-    throw err;
-  }
+  UNQFY.deleteArtist(id);
 }
