@@ -6,6 +6,8 @@ import { getUNQfy, saveUNQfy } from './database/connection';
 import EntityAlreadyExist from "./exceptions/entityAlreadyExist";
 import EntityNotFoundError from "./exceptions/entityNotFountError";
 import BadParamError from "./exceptions/badParamError";
+import { albumRouter } from "./routes/album.route";
+import { nextTick } from "node:process";
 
 // App Variables
 const PORT: number = 3000;
@@ -25,11 +27,18 @@ app.locals.unqfy = Unqfy;
 
 // -- Routes
 app.use('/api', artistRouter);
+app.use('/api', albumRouter);
 
-app.all('*', (req, res) => {
-  res.status(404).json({ status: 404, errorCode: "RELATED_RESOURCE_NOT_FOUND" }).end();
+// -- Invalid URL error
+app.all('*', (req, res, next) => {
+  if(!res.statusCode){
+    res.status(404).json({ status: 404, errorCode: "RELATED_RESOURCE_NOT_FOUND" }).end();
+  } else {
+    next();
+  }
 })
 
+// -- Error handler
 app.use((err: Error, req: Request, res: Response, next: Function) => {
   if(err instanceof EntityAlreadyExist) {
     res.status(409).json({ status: 409, errorCode: "RESOURCE_ALREADY_EXISTS" });
