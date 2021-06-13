@@ -26,6 +26,10 @@ export default class UNQfy {
     return this.artists;
   }
 
+  getPlaylists() : Playlist[] {
+    return this.playlists;
+  }
+
   getAlbums(): Album[] {
     let albums: Album[] = this.artists.map(artist => artist.albums).flat();
 

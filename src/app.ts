@@ -7,6 +7,8 @@ import EntityAlreadyExist from "./exceptions/entityAlreadyExist";
 import EntityNotFoundError from "./exceptions/entityNotFountError";
 import BadParamError from "./exceptions/badParamError";
 import { albumRouter } from "./routes/album.route";
+import {trackRouter} from "./routes/track.route";
+import {playlistRoute} from "./routes/playlist.route";
 import { nextTick } from "node:process";
 
 // App Variables
@@ -26,8 +28,12 @@ app.use(morgan('combined'));
 app.locals.unqfy = Unqfy;
 
 // -- Routes
+app.use('/api', playlistRoute);
+app.use('/api', trackRouter);
 app.use('/api', artistRouter);
 app.use('/api', albumRouter);
+
+
 
 // -- Invalid URL error
 app.all('*', (req, res, next) => {
@@ -58,6 +64,7 @@ app.use(function (req, res, next) {
   saveUNQfy(app.locals.unqfy);
   next();
 });
+
 
 // Server Activation
 app.listen(PORT, () => {
