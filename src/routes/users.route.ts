@@ -1,6 +1,14 @@
 import express, { Request, Response } from "express";
 import BadParamError from "../exceptions/badParamError";
-import {createUser, deleteUser, getUser, setUnqfy, updateUser} from "../services/users.service";
+import {
+    createUser,
+    deleteUser,
+    getListeneds,
+    getUser, howManyListens,
+    listenTrack,
+    setUnqfy,
+    updateUser
+} from "../services/users.service";
 import User from "../model/user";
 
 export const usersRoute = express.Router();
@@ -59,6 +67,42 @@ usersRoute.delete('/user/:id', async (req: Request, res: Response, next: Functio
         deleteUser(id);
 
         res.status(204).send('Usuario eliminado con exito');
+
+        next();
+    } catch(err) { next(err) }
+});
+
+usersRoute.post('/user/:userid/:trackid', async (req: Request, res: Response, next: Function) => {
+    try {
+        let { userid, trackid } = req.params;
+
+        listenTrack(userid, trackid);
+
+        res.status(200)
+
+        next();
+    } catch(err) { next(err) }
+});
+
+usersRoute.get('/user/:id', async (req: Request, res: Response, next: Function) => {
+    try {
+        let { id } = req.params;
+
+        let listened = getListeneds(id)
+
+        res.status(201).json(listened);
+
+        next();
+    } catch(err) { next(err) }
+});
+
+usersRoute.get('/user/:userid/:trackid', async (req: Request, res: Response, next: Function) => {
+    try {
+        let { userid, trackid } = req.params;
+
+        let listens = howManyListens(userid, trackid);
+
+        res.status(201).json(listens);
 
         next();
     } catch(err) { next(err) }

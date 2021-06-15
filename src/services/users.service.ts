@@ -28,3 +28,15 @@ export function updateUser(id: string, username: string) {
 export function deleteUser(id: string) {
     unQfy.deleteUser(id);
 }
+
+export function listenTrack(userId: string, trackId: string){
+    unQfy.listen(userId, trackId)
+}
+
+export function howManyListens(userId: string, trackId: string): number{
+    return unQfy.howManyListen(userId, trackId)
+}
+
+export function getListeneds(userId: string): string[]{
+    return unQfy.listened(userId)
+}
