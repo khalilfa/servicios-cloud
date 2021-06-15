@@ -308,9 +308,9 @@ export default class UNQfy {
     spotifyAlbums.forEach((value: { name: any; year: string; albumId: string; }) => albums.push(this.addAlbum(artist.id, {
       name: value.name,
       year: parseInt(value.year.substring(0, 4))
-    }, value.albumId)))
+    })))
     spotifyTracks.forEach((value: { albumId: any; tracks: any[]; }) => this.addTracksToAlbum(value.albumId, value.tracks, spotifyArtist.genres))
-    console.log(this.getTracksMatchingGenres(["rock"]))
+    //console.log(this.getTracksMatchingGenres(["rock"]))
   }
 
   private addTracksToAlbum(albumId: any, tracks: any[], genres: any[]) {
