@@ -27,6 +27,11 @@ app.use(morgan('combined'));
 // -- Load Unqfy data
 app.locals.unqfy = Unqfy;
 
+app.use((req, res, next) => {
+  res.status(888);
+  next();
+})
+
 // -- Routes
 app.use('/api', artistRouter);
 app.use('/api', playlistRoute);
@@ -36,7 +41,7 @@ app.use('/api', usersRoute);
 
 // -- Invalid URL error
 app.all('*', (req, res, next) => {
-  res.status(404).json({ status: 404, errorCode: "RELATED_RESOURCE_NOT_FOUND" }).end();
+  if(res.statusCode === 888) res.status(404).json({ status: 404, errorCode: "RELATED_RESOURCE_NOT_FOUND" }).end();
 })
 
 // -- Error handler
