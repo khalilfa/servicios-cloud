@@ -4,7 +4,7 @@ import Track from './track';
 
 export default class User {
   private _id: string;
-  private _name: string;
+  _name: string;
   private _listened: Listen[];
 
   constructor(name: string) {
@@ -34,6 +34,5 @@ export default class User {
 
     return listen;
   }
-
 
 }

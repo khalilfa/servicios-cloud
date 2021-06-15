@@ -39,6 +39,8 @@ export default class UNQfy {
   addUser(name: string) {
     let user: User = new User(name);
 
+    if(this.users.some(user => user.name.toLowerCase() === name.toLowerCase())) throw new EntityAlreadyExist('User', name);
+
     this.users.push(user);
 
     return user;
@@ -287,6 +289,11 @@ export default class UNQfy {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     const classes = [UNQfy, Artist, Album, Track, Playlist, User, Listen];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
+  }
+
+  deleteUser(id: string) {
+    if(!this.users.some(user => user.id === id)) throw new EntityNotFoundError("User", id);
+    this.users = this.users.filter(artist => artist.id != id);
   }
 }
 
