@@ -12,6 +12,7 @@ import Listen from '../model/listen';
 
 const COMMANDS: string[] = ['addArtist', 'addAlbum', 'addTrack', 'tracksByGenres', 'tracksByArtist', 'deleteArtist', 'deleteAlbum', 'deleteTrack',
   'addPlaylist', 'search', 'deletePlaylist', 'viewArtist', 'viewAlbum', 'viewTrack', 'viewPlaylist', 'addUser', 'listen', 'listened',
+  'howManyListen', 'thisIs', 'populateAlbumsForArtist',
   'howManyListen', 'thisIs', 'lyrics'];
 const VALID_PARAMS: any = {
   addArtist: ['name', 'country'],
@@ -34,6 +35,7 @@ const VALID_PARAMS: any = {
   listened: ['user'],
   howManyListen: ['user', 'track'],
   thisIs: ['artist'],
+  populateAlbumsForArtist: ['artistName'],
   lyrics: ['track']
 }
 
@@ -98,6 +100,10 @@ class Command {
     let lyrics: string = await this.unqfy.getLyrics(track);
 
     console.log(`Letra de ${track}: \n ${lyrics}`);
+  }
+
+  populateAlbumsForArtist(){
+    this.unqfy.populateAlbumsForArtist(this.properties.artistName);
   }
 
   listen() {

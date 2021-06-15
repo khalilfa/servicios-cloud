@@ -6,6 +6,8 @@ import EntityNotFoundError from './exceptions/entityNotFountError';
 import Playlist from './model/playlist';
 import User from './model/user';
 import Listen from './model/listen';
+import SpotifyService from "./utils/spotify.service";
+
 import { getLyrics } from './utils/musixMatch';
 import EntityAlreadyExist from './exceptions/entityAlreadyExist';
 
@@ -295,6 +297,26 @@ export default class UNQfy {
     if(!this.users.some(user => user.id === id)) throw new EntityNotFoundError("User", id);
     this.users = this.users.filter(artist => artist.id != id);
   }
+
+  async populateAlbumsForArtist(artistName: string) {
+    const spotifyArtist = await SpotifyService.getArstistId(artistName)
+    const spotifyAlbums = await SpotifyService.getArtistAlbums(spotifyArtist.id)
+    const spotifyTracks = await SpotifyService.getTracksFromAlbums(spotifyAlbums)
+
+    const artist = this.addArtist({name: artistName, country: "unkown"})
+    let albums: Album[] = []
+    spotifyAlbums.forEach((value: { name: any; year: string; albumId: string; }) => albums.push(this.addAlbum(artist.id, {
+      name: value.name,
+      year: parseInt(value.year.substring(0, 4))
+    })))
+    spotifyTracks.forEach((value: { albumId: any; tracks: any[]; }) => this.addTracksToAlbum(value.albumId, value.tracks, spotifyArtist.genres))
+    //console.log(this.getTracksMatchingGenres(["rock"]))
+  }
+
+  private addTracksToAlbum(albumId: any, tracks: any[], genres: any[]) {
+    tracks.forEach(value => this.addTrack(albumId, {name: value.name, duration: value.duration, genres: genres}))
+  }
+
 }
 
 module.exports = UNQfy;
