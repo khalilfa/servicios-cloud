@@ -7,9 +7,13 @@ import EntityAlreadyExist from "./exceptions/entityAlreadyExist";
 import EntityNotFoundError from "./exceptions/entityNotFountError";
 import BadParamError from "./exceptions/badParamError";
 import { albumRouter } from "./routes/album.route";
+import {trackRouter} from "./routes/track.route";
+import {playlistRoute} from "./routes/playlist.route";
+import { nextTick } from "node:process";
+import {usersRoute} from "./routes/users.route";
 
 // App Variables
-const PORT: number = 3000;
+const PORT = 3000;
 const app = express();
 
 const Unqfy = getUNQfy();
@@ -25,8 +29,13 @@ app.use(morgan('combined'));
 app.locals.unqfy = Unqfy;
 
 // -- Routes
+app.use('/api', playlistRoute);
+app.use('/api', trackRouter);
 app.use('/api', artistRouter);
 app.use('/api', albumRouter);
+app.use('/api', usersRoute);
+
+
 
 // -- Invalid URL error
 app.all('*', (req, res, next) => {
@@ -57,6 +66,7 @@ app.use(function (req, res, next) {
   saveUNQfy(app.locals.unqfy);
   next();
 });
+
 
 // Server Activation
 app.listen(PORT, () => {
