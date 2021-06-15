@@ -9,11 +9,10 @@ import BadParamError from "./exceptions/badParamError";
 import { albumRouter } from "./routes/album.route";
 import {trackRouter} from "./routes/track.route";
 import {playlistRoute} from "./routes/playlist.route";
-import { nextTick } from "node:process";
 import {usersRoute} from "./routes/users.route";
 
 // App Variables
-const PORT = 3000;
+const PORT = 5000;
 const app = express();
 
 const Unqfy = getUNQfy();
@@ -29,21 +28,15 @@ app.use(morgan('combined'));
 app.locals.unqfy = Unqfy;
 
 // -- Routes
+app.use('/api', artistRouter);
 app.use('/api', playlistRoute);
 app.use('/api', trackRouter);
-app.use('/api', artistRouter);
 app.use('/api', albumRouter);
 app.use('/api', usersRoute);
 
-
-
 // -- Invalid URL error
 app.all('*', (req, res, next) => {
-  if(!res.statusCode){
-    res.status(404).json({ status: 404, errorCode: "RELATED_RESOURCE_NOT_FOUND" }).end();
-  } else {
-    next();
-  }
+  res.status(404).json({ status: 404, errorCode: "RELATED_RESOURCE_NOT_FOUND" }).end();
 })
 
 // -- Error handler

@@ -21,7 +21,10 @@ artistRouter.get("/artists", async (req: Request, res: Response, next: Function)
     res.status(200).json(artists);
     
     next();
-  } catch(err) { next(err) };
+  } catch(err) { 
+    console.log('-- ERROR: ', err);
+    next(err)
+  };
 });
 
 // Get specific artist
