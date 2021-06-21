@@ -15,9 +15,7 @@ albumRouter.use(async (req: Request, res: Response, next: Function) => {
 
 // Create album
 albumRouter.post('/albums', async (req: Request, res: Response, next: Function) => {
-console.log("entro en el post");
   try {
-    console.log('post albums');
     let { artistId, name, year } = req.body;
 
     if(!artistId || !name || !year || !(typeof year == 'number')) throw new BadParamError(['artistId', 'name', 'year']);

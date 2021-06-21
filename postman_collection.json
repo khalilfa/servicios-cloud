@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e0dfa417-e7c5-4718-9ba3-e3716c39b4d2",
+		"_postman_id": "be433ddc-695b-4608-823b-8ce051293628",
 		"name": "UNQfy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -14,7 +14,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "63f7e491-2760-4b9c-87e6-8d32020c40d2",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -66,7 +65,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6702f958-f3e5-4b1c-8c67-012067ebcccf",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -119,7 +117,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ffe76b9a-19d8-41fa-bf2c-212ac180f3df",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -142,10 +139,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/artists/9999",
 							"protocol": "http",
@@ -168,7 +161,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "dbe9b3b7-a06f-4f02-88bb-cb3af15dab66",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -221,7 +213,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1aca0ea1-0c7c-404a-9f45-0175e88e483f",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -274,7 +265,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "11480556-ea39-4f59-b474-94487490e2eb",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -297,10 +287,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/albums/99999",
 							"protocol": "http",
@@ -323,7 +309,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "113e771b-dcbe-4a6a-951b-27ff8eb2ab9a",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -376,7 +361,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "88cb7149-ab44-4b56-aa74-02e32a9c3df6",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -425,7 +409,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "b6c8cf47-bb76-4f17-916f-881a71c33217",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -479,7 +462,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "b94fe76d-dbe5-4108-a304-df78a39872e6",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -489,7 +471,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "bb83f8a0-4c6e-429a-8826-e59ebd08f158",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -510,10 +491,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/artists?name=guns",
 							"protocol": "http",
@@ -541,7 +518,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "2e40ec32-0fc9-4214-b41a-38d608523c79",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -562,10 +538,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/artists",
 							"protocol": "http",
@@ -587,7 +559,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "83b15e7d-c196-4557-89e2-4e55a3e6cda6",
 								"exec": [
 									"const chai = require('chai');",
 									"chai.config.truncateThreshold = 0;",
@@ -615,7 +586,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "472d13a7-271f-469c-abd5-8cac885f04b8",
 								"exec": [
 									""
 								],
@@ -656,7 +626,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e6d4104c-ba15-4b48-ac56-5465fe164ea1",
 								"exec": [
 									"const chai = require('chai');",
 									"chai.config.truncateThreshold = 0;",
@@ -678,7 +647,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "472d13a7-271f-469c-abd5-8cac885f04b8",
 								"exec": [
 									""
 								],
@@ -719,7 +687,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "96e18de3-45e0-4700-b295-4749b89085e8",
 								"exec": [
 									"const chai = require('chai');",
 									"chai.config.truncateThreshold = 0;",
@@ -749,10 +716,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/artists/{{testArtistId}}",
 							"protocol": "http",
@@ -775,7 +738,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "83b15e7d-c196-4557-89e2-4e55a3e6cda6",
 								"exec": [
 									"const chai = require('chai');",
 									"chai.config.truncateThreshold = 0;",
@@ -803,7 +765,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "472d13a7-271f-469c-abd5-8cac885f04b8",
 								"exec": [
 									""
 								],
@@ -845,7 +806,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "0e1deec2-0392-4f88-be8c-7aec5672f93c",
 								"exec": [
 									"const chai = require('chai');",
 									"chai.config.truncateThreshold = 0;",
@@ -873,7 +833,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "472d13a7-271f-469c-abd5-8cac885f04b8",
 								"exec": [
 									""
 								],
@@ -914,7 +873,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "9a1b3fc4-2f01-48c8-9ecd-153a8589fa5b",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -924,7 +882,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "03f55b06-8999-4bcf-9844-ae6898e7936e",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -951,10 +908,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/artists?name=guns",
 							"protocol": "http",
@@ -982,7 +935,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "9a1b3fc4-2f01-48c8-9ecd-153a8589fa5b",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -992,7 +944,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "fca04839-2a52-4b41-aaad-cacde330a22c",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -1025,10 +976,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/artists?name=se",
 							"protocol": "http",
@@ -1056,7 +1003,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "0f72ee65-3997-48f9-93ca-536ab95eb799",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -1090,10 +1036,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/artists",
 							"protocol": "http",
@@ -1115,7 +1057,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "06ea2266-2834-4f9c-8f78-4dc61b40b9a4",
 								"exec": [
 									"const chai = require('chai');",
 									"chai.config.truncateThreshold = 0;",
@@ -1159,7 +1100,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c467ac7c-9117-449c-aed4-02d24973eb18",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -1186,10 +1126,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/artists",
 							"protocol": "http",
@@ -1216,7 +1152,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "92fcc20c-0b0c-46eb-915a-84323427d47b",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -1236,10 +1171,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/albums",
 							"protocol": "http",
@@ -1261,7 +1192,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1aa6bb03-d0c7-4c57-9750-e777518bf29e",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -1281,10 +1211,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/albums?name=destruction",
 							"protocol": "http",
@@ -1312,7 +1238,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "fbe69b5a-7c67-4a2e-b9a7-ef4471fa2f45",
 								"exec": [
 									"const chai = require('chai');",
 									"chai.config.truncateThreshold = 0;",
@@ -1341,7 +1266,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "98b10a84-9048-4a8b-a2af-e186cfceb591",
 								"exec": [
 									"/*",
 									"pm.test(\"response is ok\", function () {",
@@ -1385,7 +1309,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Appetite For Destruction\",\n  \"year\": 2000,\n  \"artistId\": {{testArtistId}}\n}"
+							"raw": "{\n  \"name\": \"Appetite For Destruction\",\n  \"year\": 2000,\n  \"artistId\": \"{{testArtistId}}\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/albums",
@@ -1408,7 +1332,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "bd9ef591-b3b4-4fc3-8011-4fd4998a3dca",
 								"exec": [
 									"const chai = require('chai');",
 									"chai.config.truncateThreshold = 0;",
@@ -1430,7 +1353,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "98b10a84-9048-4a8b-a2af-e186cfceb591",
 								"exec": [
 									"/*",
 									"pm.test(\"response is ok\", function () {",
@@ -1474,7 +1396,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Appetite For Destruction\",\n  \"year\": 2000,\n  \"artistId\": {{testArtistId}}\n}"
+							"raw": "{\n  \"name\": \"Appetite For Destruction\",\n  \"year\": 2000,\n  \"artistId\": \"{{testArtistId}}\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/albums",
@@ -1497,7 +1419,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "618a2ad4-be8d-4a28-8f99-a573e11a8a4c",
 								"exec": [
 									"const chai = require('chai');",
 									"chai.config.truncateThreshold = 0;",
@@ -1525,10 +1446,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/albums/{{testAlbumId}}",
 							"protocol": "http",
@@ -1551,7 +1468,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "618a2ad4-be8d-4a28-8f99-a573e11a8a4c",
 								"exec": [
 									"const chai = require('chai');",
 									"chai.config.truncateThreshold = 0;",
@@ -1612,7 +1528,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "3dd7ee74-c74d-406c-b53d-7d42a3e26391",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -1649,10 +1564,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/artists/{{testArtistId}}",
 							"protocol": "http",
@@ -1675,7 +1586,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "46cf5bc8-5a65-4126-8e4a-83695e1eb65d",
 								"exec": [
 									"const chai = require('chai');",
 									"chai.config.truncateThreshold = 0;",
@@ -1704,7 +1614,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "98b10a84-9048-4a8b-a2af-e186cfceb591",
 								"exec": [
 									"/*",
 									"pm.test(\"response is ok\", function () {",
@@ -1748,7 +1657,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Use Your Illusion 1\",\n  \"year\": 1992,\n  \"artistId\": {{testArtistId}}\n}"
+							"raw": "{\n  \"name\": \"Use Your Illusion 1\",\n  \"year\": 1992,\n  \"artistId\": \"{{testArtistId}}\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/albums",
@@ -1771,7 +1680,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "01fafe70-1d16-4446-813c-1af9bff8ae55",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -1800,10 +1708,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/albums?name=illusion",
 							"protocol": "http",
@@ -1831,7 +1735,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f55807fc-e85a-443f-b1f2-ed775387c37e",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -1864,10 +1767,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/albums",
 							"protocol": "http",
@@ -1889,7 +1788,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "2d66ad5c-e087-41e9-9cee-6cfd02ea40b0",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -1932,10 +1830,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/artists/{{testArtistId}}",
 							"protocol": "http",
@@ -1958,7 +1852,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "db18d028-21ba-405c-80a5-f559ff2fdec5",
 								"exec": [
 									"const chai = require('chai');",
 									"chai.config.truncateThreshold = 0;",
@@ -2000,7 +1893,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "5decede5-16b5-4e1c-bd00-676ea3e94cb9",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -2037,10 +1929,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/artists/{{testArtistId}}",
 							"protocol": "http",
@@ -2063,7 +1951,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "58c8427d-9702-4a1a-8915-f2930de7ecf6",
 								"type": "text/javascript",
 								"exec": [
 									"const chai = require('chai');",
@@ -2090,10 +1977,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/albums",
 							"protocol": "http",
@@ -2120,7 +2003,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c3bba92d-cfe8-4c6d-87af-409f6d4826dd",
 								"exec": [
 									""
 								],
@@ -2136,10 +2018,6 @@
 								"value": "application/json"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:{{port}}/api/tracks/1/lyrics",
 							"protocol": "http",

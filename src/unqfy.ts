@@ -10,6 +10,7 @@ import SpotifyService from "./utils/spotify.service";
 
 import { getLyrics } from './utils/musixMatch';
 import EntityAlreadyExist from './exceptions/entityAlreadyExist';
+import RelatedEntityNotFound from './exceptions/relatedEntityNotFound';
 
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 
@@ -131,7 +132,7 @@ export default class UNQfy {
         artist.addAlbum(album)
       }
     })
-    if (!album) throw new EntityNotFoundError("Artist", artistId);
+    if (!album) throw new RelatedEntityNotFound("Artist", artistId);
     return album
   }
 
