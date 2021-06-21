@@ -18,7 +18,16 @@ artistRouter.get("/artists", async (req: Request, res: Response, next: Function)
     let name: string | undefined = req.query.name as string;
 
     let artists: Artist[] = searchArtists(name);
-    res.status(200).json(artists);
+    let response : any[] =  [] ;
+    artists.forEach(
+      artist => response.push({
+        id : artist.id ,
+        name: artist.name ,
+        albums: artist.albums ,
+        country: artist.country ,
+      })
+    )
+    res.status(200).json(response);
     
     next();
   } catch(err) { next(err) };
@@ -31,8 +40,13 @@ artistRouter.get("/artists/:id", async (req: Request, res: Response, next: Funct
 
     let artist: Artist = getArtistById(id);
 
-    res.status(200).json(artist);
-    
+    res.status(200).json({
+      id : artist.id ,
+      name: artist.name ,
+      albums: artist.albums ,
+      country: artist.country ,
+    });
+ 
     next();
   } catch(err) { next(err) };
 });
@@ -46,7 +60,12 @@ artistRouter.post("/artists", async (req: Request, res: Response, next: Function
 
     let artist: Artist = createArtist(name, country);
     
-    res.status(201).json(artist);
+    res.status(201).json({
+      id : artist.id ,
+      name: artist.name ,
+      albums : artist.albums ,
+      country : artist.country ,
+    });
 
     next();
   } catch(err) { next(err) };
@@ -54,16 +73,21 @@ artistRouter.post("/artists", async (req: Request, res: Response, next: Function
 });
 
 // Update artist
-artistRouter.patch("/artists/:id", async (req: Request, res: Response, next: Function) => {
+artistRouter.put("/artists/:id", async (req: Request, res: Response, next: Function) => {
   try {
     let { id } = req.params;
     let { name, country } = req.body;
 
-    if(!name || !country) throw new BadParamError(['name', 'country']);
+     if(!name || !country) throw new BadParamError(['name', 'country']);
 
     let artist: Artist = updateArtist(id, name, country);
 
-    res.status(200).json(artist);
+    res.status(200).json({
+      id : artist.id ,
+      name: artist.name ,
+      albums : artist.albums ,
+      country : artist.country ,
+    });
 
     next();
   } catch(err) { next(err) };

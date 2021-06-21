@@ -38,6 +38,8 @@ export default class UNQfy {
     return albums;
   }
 
+
+
   addUser(name: string) {
     let user: User = new User(name);
 
