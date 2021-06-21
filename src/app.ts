@@ -11,9 +11,11 @@ import {trackRouter} from "./routes/track.route";
 import {playlistRoute} from "./routes/playlist.route";
 import {usersRoute} from "./routes/users.route";
 
+
 // App Variables
 const PORT = 5000;
 const app = express();
+
 
 const Unqfy = getUNQfy();
 
@@ -39,10 +41,14 @@ app.use('/api', trackRouter);
 app.use('/api', albumRouter);
 app.use('/api', usersRoute);
 
+
+// console.log(listEndpoints(app));
 // -- Invalid URL error
 app.all('*', (req, res, next) => {
   if(res.statusCode === 888) res.status(404).json({ status: 404, errorCode: "RELATED_RESOURCE_NOT_FOUND" }).end();
 })
+
+
 
 // -- Error handler
 app.use((err: Error, req: Request, res: Response, next: Function) => {

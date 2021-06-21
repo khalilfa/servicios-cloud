@@ -15,17 +15,25 @@ albumRouter.use(async (req: Request, res: Response, next: Function) => {
 
 // Create album
 albumRouter.post('/albums', async (req: Request, res: Response, next: Function) => {
+console.log("entro en el post");
   try {
+    console.log('post albums');
     let { artistId, name, year } = req.body;
 
     if(!artistId || !name || !year || !(typeof year == 'number')) throw new BadParamError(['artistId', 'name', 'year']);
 
     let album: Album = createAlbum(artistId, name, year);
   
-    res.status(201).json(album);
+    res.status(201).json({
+      id: album.id, 
+      name: album.name, 
+      year: album.year, 
+      tracks: album.tracks ,
+    });
 
     next();
-  } catch(err) { next(err) };
+  } catch(err) { next(err) }; 
+
 });
 
 // Get specific album
@@ -35,7 +43,12 @@ albumRouter.get('/albums/:id', async (req: Request, res: Response, next: Functio
 
     let album: Album = getAlbumById(id);
 
-    res.status(200).json(album);
+    res.status(200).json({
+      id: album.id, 
+      name: album.name, 
+      year: album.year, 
+      tracks: album.tracks ,
+    });
 
     next();
   } catch(err) { next(err) };
@@ -51,7 +64,12 @@ albumRouter.patch('/albums/:id', async (req: Request, res: Response, next: Funct
 
     let album: Album = updateAlbum(id, year);
 
-    res.status(200).json(album);
+    res.status(200).json({
+      id: album.id, 
+      name: album.name, 
+      year: album.year, 
+      tracks: album.tracks ,
+    });
 
     next();
   } catch(err) { next(err) };
@@ -76,7 +94,17 @@ albumRouter.get('/albums', async (req: Request, res: Response, next: Function) =
     let name: string | undefined = req.query.name as string;
 
     let albums: Album[] = searchAlbums(name);
-    res.status(200).json(albums);
+    let response : any[] =  [] ;
+
+    albums.forEach(
+      album => response.push({
+        id: album.id, 
+        name: album.name, 
+        year: album.year, 
+        tracks: album.tracks ,
+      })
+    )
+    res.status(200).json(response);
 
     next();
   } catch(err) { next(err) };

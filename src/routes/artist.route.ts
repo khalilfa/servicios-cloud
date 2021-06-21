@@ -19,11 +19,12 @@ artistRouter.get("/artists", async (req: Request, res: Response, next: Function)
 
     let artists: Artist[] = searchArtists(name);
     let response : any[] =  [] ;
+
     artists.forEach(
       artist => response.push({
         id : artist.id ,
         name: artist.name ,
-        albums: artist.albums ,
+        albums: artist.getIndexAlbums() ,
         country: artist.country ,
       })
     )
@@ -43,7 +44,7 @@ artistRouter.get("/artists/:id", async (req: Request, res: Response, next: Funct
     res.status(200).json({
       id : artist.id ,
       name: artist.name ,
-      albums: artist.albums ,
+      albums: artist.getIndexAlbums() ,
       country: artist.country ,
     });
  

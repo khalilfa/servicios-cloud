@@ -124,4 +124,11 @@ export default class Artist {
       return allTracks.reduce((acc, val) => acc.concat(val), []);
    }
 
+   getIndexAlbums() : any[] {
+    let ret : any[] ;
+    ret=[];
+    this.albums.forEach(album => ret.push({id : album.id , name : album.name , year : album.year , tracks : album.tracks}));
+    return ret;
+  }
+
 }
