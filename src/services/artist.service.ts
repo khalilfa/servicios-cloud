@@ -35,3 +35,6 @@ export function updateArtist(id: string, name: string, country: string) {
 export function deleteArtist(id: string) {
   UNQFY.deleteArtist(id);
 }
+export function populateAlbumsForArtist(id: string){
+  UNQFY.populateAlbumsForArtist(id)
+}

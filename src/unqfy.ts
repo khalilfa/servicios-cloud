@@ -122,13 +122,13 @@ export default class UNQfy {
     return artist;
   }
 
-  addAlbum(artistId: string, albumData: {name: string, year: number}): Album {
+  addAlbum(artistId: string, albumData: {name: string, year: number}, customId = ""): Album {
     let album: Album  | undefined;
     this.artists.forEach(artist => {
       if(artist.id === artistId){
         if(artist.hasAlbum(albumData.name)) throw new EntityAlreadyExist('Album', albumData.name);
 
-        album = new Album(albumData.name, albumData.year)
+        album = new Album(albumData.name, albumData.year, customId)
         artist.addAlbum(album)
       }
     })
@@ -311,9 +311,9 @@ export default class UNQfy {
     spotifyAlbums.forEach((value: { name: any; year: string; albumId: string; }) => albums.push(this.addAlbum(artist.id, {
       name: value.name,
       year: parseInt(value.year.substring(0, 4))
-    })))
+    }, value.albumId)))
     spotifyTracks.forEach((value: { albumId: any; tracks: any[]; }) => this.addTracksToAlbum(value.albumId, value.tracks, spotifyArtist.genres))
-    //console.log(this.getTracksMatchingGenres(["rock"]))
+    console.log(this.getTracksMatchingGenres(["rock"]))
   }
 
   private addTracksToAlbum(albumId: any, tracks: any[], genres: any[]) {

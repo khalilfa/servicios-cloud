@@ -1,7 +1,16 @@
 import express, { Request, Response } from "express";
 import BadParamError from "../exceptions/badParamError";
 import Artist from "../model/artist";
-import { searchArtists, getArtistById, createArtist, updateArtist, deleteArtist, setUnqfy } from '../services/artist.service';
+import {
+  searchArtists,
+  getArtistById,
+  createArtist,
+  updateArtist,
+  deleteArtist,
+  setUnqfy,
+  populateAlbumsForArtist
+} from '../services/artist.service';
+import {usersRoute} from "./users.route";
 
 export const artistRouter = express.Router();
 
@@ -105,4 +114,16 @@ artistRouter.delete("/artists/:id", async (req: Request, res: Response, next: Fu
 
     next();
   } catch(err) { next(err) };
+});
+
+usersRoute.get('/populate/:artistid', async (req: Request, res: Response, next: Function) => {
+  try {
+    let { artistid } = req.params;
+
+    populateAlbumsForArtist(artistid)
+
+    res.status(201);
+
+    next();
+  } catch(err) { next(err) }
 });

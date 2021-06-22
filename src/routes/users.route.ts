@@ -45,6 +45,7 @@ usersRoute.get('/user/:id', async (req: Request, res: Response, next: Function) 
     } catch(err) { next(err) }
 });
 
+
 usersRoute.patch('/user/:id', async (req: Request, res: Response, next: Function) => {
     try {
         let { id } = req.params;
