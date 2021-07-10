@@ -1,0 +1,10 @@
+import UNQfy from "../unqfy";
+import User from "../model/user";
+export declare function setUnqfy(unqfy: UNQfy): void;
+export declare function createUser(username: string): User;
+export declare function getUser(id: string): User;
+export declare function updateUser(id: string, username: string): User;
+export declare function deleteUser(id: string): void;
+export declare function listenTrack(userId: string, trackId: string): void;
+export declare function howManyListens(userId: string, trackId: string): number;
+export declare function getListeneds(userId: string): string[];
