@@ -1,4 +1,0 @@
-{
-  "PORT": 6000,
-  "UNQFY_SERVICE_URI": "http://localhost:5000/api"
-}
