@@ -11,15 +11,17 @@ import SpotifyService from "./utils/spotify.service";
 import { getLyrics } from './utils/musixMatch';
 import EntityAlreadyExist from './exceptions/entityAlreadyExist';
 import RelatedEntityNotFound from './exceptions/relatedEntityNotFound';
+import { Subject } from './observer';
 
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 
-export default class UNQfy {
+export default class UNQfy extends Subject {
   private artists: Artist[];
   private playlists: Playlist[];
   private users: User[];
 
   constructor() {
+    super();
     this.artists = [];
     this.playlists = [];
     this.users = [];
@@ -38,8 +40,6 @@ export default class UNQfy {
 
     return albums;
   }
-
-
 
   addUser(name: string) {
     let user: User = new User(name);
@@ -119,6 +119,9 @@ export default class UNQfy {
     let artist: Artist = new Artist(name, country);
 
     this.artists.push(artist);
+
+    this.change('addArtist', name);
+
     return artist;
   }
 

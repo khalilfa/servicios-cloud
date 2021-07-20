@@ -11,6 +11,7 @@ import {trackRouter} from "./routes/track.route";
 import {playlistRoute} from "./routes/playlist.route";
 import {usersRoute} from "./routes/users.route";
 import RelatedEntityNotFound from "./exceptions/relatedEntityNotFound";
+import { LogginObserver, NewsletterObserver } from "./observer";
 
 
 // App Variables
@@ -26,6 +27,13 @@ app.use(express.json());
 
 // -- Log http requests
 app.use(morgan('combined'));
+
+// -- Observer
+const newsletterObserver = new NewsletterObserver('newsletter');
+const loggerObserver = new LogginObserver('logger');
+
+Unqfy.subscribe(loggerObserver);
+Unqfy.subscribe(newsletterObserver);
 
 // -- Load Unqfy data
 app.locals.unqfy = Unqfy;
