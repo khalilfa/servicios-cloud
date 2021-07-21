@@ -1,7 +1,5 @@
 import axios from "axios";
 
-import LoggerService, {LogLevel} from "./services/logger.service";
-
 export class Subject {
   private subscribers: Observer[];
 
@@ -63,27 +61,33 @@ export class LogginObserver extends Observer {
   update(action: string, object: object, owner: object) {
     switch (action) {
       case 'addArtist':
-        LoggerService.log("info", "Added artist" + object)
+        this.log("info", "Added artist" + object)
         break;
       case 'addAlbum':
-        LoggerService.log("info", "Added album" + object)
+        this.log("info", "Added album" + object)
         break;
       case 'addTrack':
-        LoggerService.log("info", "Added track" + object)
+        this.log("info", "Added track" + object)
         break;
       case 'deleteArtist':
-        LoggerService.log("info", "Deleted artist" + object)
+        this.log("info", "Deleted artist" + object)
         break;
       case 'deleteAlbum':
-        LoggerService.log("info", "Deleted album" + object)
+        this.log("info", "Deleted album" + object)
         break;
       case 'deleteTrack':
-        LoggerService.log("info", "Deleted track" + object)
+        this.log("info", "Deleted track" + object)
       break;
       default:
         break;
     }
   }
 
+  log(level: string, message: string) {
+    const res = axios.post('http://logger:5002/api/log', {
+      level,
+      message
+    });
+  }
   
 }
