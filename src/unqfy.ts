@@ -120,22 +120,27 @@ export default class UNQfy extends Subject {
 
     this.artists.push(artist);
 
-    this.change('addArtist', name);
+    this.change('addArtist', artist, artist);
 
     return artist;
   }
 
   addAlbum(artistId: string, albumData: {name: string, year: number}, customId = ""): Album {
-    let album: Album  | undefined;
-    this.artists.forEach(artist => {
-      if(artist.id === artistId){
-        if(artist.hasAlbum(albumData.name)) throw new EntityAlreadyExist('Album', albumData.name);
+    let album: Album | undefined;
+    let artist: Artist | undefined; 
+    this.artists.forEach(art => {
+      if(art.id === artistId){
+        if(art.hasAlbum(albumData.name)) throw new EntityAlreadyExist('Album', albumData.name);
 
         album = new Album(albumData.name, albumData.year, customId)
-        artist.addAlbum(album)
+        artist = art;
+        art.addAlbum(album)
       }
     })
     if (!album) throw new RelatedEntityNotFound("Artist", artistId);
+
+    this.change('addAlbum', album, artist);
+
     return album
   }
 

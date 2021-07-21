@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export class Subject {
   private subscribers: Observer[];
 
@@ -13,8 +15,8 @@ export class Subject {
     this.subscribers = this.subscribers.filter(sub => sub.id !== subscriber.id);
   }
 
-  change(action: string, object: string) {
-    this.subscribers.forEach(sub => sub.update(action, object));
+  change(action: string, object: any, owner: any) {
+    this.subscribers.forEach(sub => sub.update(action, object, owner));
   }
 }
 
@@ -25,7 +27,7 @@ abstract class Observer {
     this.id = id;
   }
 
-  abstract update(action: string, object: string) : void;
+  abstract update(action: string, object: object, owner: object) : void;
 }
 
 export class NewsletterObserver extends Observer {
@@ -33,14 +35,21 @@ export class NewsletterObserver extends Observer {
     super(id);
   }
 
-  update(action: string, object: string) {
+  update(action: string, object: object, owner: object) {
     if(action === 'addAlbum') {
-      this.notify(object);
+      this.notify(object, owner);
     }
   }
   
-  notify(object: string) {
-    console.log('Se agrego un album');
+  notify(album: any, artist: any) {
+    const artistId = artist.id;
+    const artistName = artist.name;
+    const albumName = album.name;
+    axios.post('http://localhost:6000/api/notify', {
+      artistId,
+      subject: `Nuevo Album para artista ${artistName}`, 
+      message: `Se ha agregado el album ${albumName} al artista ${artistName}`
+    });
   }
 }
 
@@ -49,7 +58,7 @@ export class LogginObserver extends Observer {
     super(id);
   }
 
-  update(action: string, object: string) {
+  update(action: string, object: object) {
     switch (action) {
       case 'addArtist':
         
