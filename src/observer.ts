@@ -63,22 +63,22 @@ export class LogginObserver extends Observer {
   update(action: string, object: object, owner: object) {
     switch (action) {
       case 'addArtist':
-        LoggerService.log(LogLevel.INFO, "Added artist" + object)
+        LoggerService.log("info", "Added artist" + object)
         break;
       case 'addAlbum':
-        LoggerService.log(LogLevel.INFO, "Added album" + object)
+        LoggerService.log("info", "Added album" + object)
         break;
       case 'addTrack':
-        LoggerService.log(LogLevel.INFO, "Added track" + object)
+        LoggerService.log("info", "Added track" + object)
         break;
       case 'deleteArtist':
-        LoggerService.log(LogLevel.INFO, "Deleted artist" + object)
+        LoggerService.log("info", "Deleted artist" + object)
         break;
       case 'deleteAlbum':
-        LoggerService.log(LogLevel.INFO, "Deleted album" + object)
+        LoggerService.log("info", "Deleted album" + object)
         break;
       case 'deleteTrack':
-        LoggerService.log(LogLevel.INFO, "Deleted track" + object)
+        LoggerService.log("info", "Deleted track" + object)
       break;
       default:
         break;

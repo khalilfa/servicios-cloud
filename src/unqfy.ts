@@ -120,7 +120,7 @@ export default class UNQfy extends Subject {
 
     this.artists.push(artist);
 
-    this.change('addArtist', artist, artist);
+    this.change('addArtist', artist.id, artist);
 
     return artist;
   }
@@ -139,7 +139,7 @@ export default class UNQfy extends Subject {
     })
     if (!album) throw new RelatedEntityNotFound("Artist", artistId);
 
-    this.change('addAlbum', album, artist);
+    this.change('addAlbum', album.id, artist);
 
     return album
   }
@@ -151,7 +151,7 @@ export default class UNQfy extends Subject {
       if(track) break
     }
     if (!track) throw new EntityNotFoundError("Album", albumId);
-    this.change('addTrack', track, null);
+    this.change('addTrack', track.id, null);
     return track
   }
 
