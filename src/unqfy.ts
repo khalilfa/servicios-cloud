@@ -151,6 +151,7 @@ export default class UNQfy extends Subject {
       if(track) break
     }
     if (!track) throw new EntityNotFoundError("Album", albumId);
+    this.change('addTrack', track, null);
     return track
   }
 
@@ -158,16 +159,19 @@ export default class UNQfy extends Subject {
     if(!this.artists.some(artist => artist.id === artistId)) throw new EntityNotFoundError("Artist", artistId);
 
     this.artists = this.artists.filter(artist => artist.id != artistId);
+    this.change('deleteArtist', artistId, null);
   }
 
   deleteAlbum(albumId: string): void {
     if(!this.artists.some(artist => artist.getAlbumById(albumId) !== undefined)) throw new EntityNotFoundError("Album", albumId);
 
     this.artists.forEach(artist => artist.deleteAlbum(albumId))
+    this.change('deleteAlbum', albumId, null);
   }
 
   deleteTrack(trackIds: string): void {
     this.artists.forEach(artist => artist.deleteTrack(trackIds))
+    this.change('deleteTrack', trackIds, null);
   }
 
   deletePlaylist(playlistId: string): void {
